@@ -9,6 +9,12 @@ Computational analysis to discover germline mutations in illumina NGS data from 
 
 # Preeliminars: 
 
+### Obtaining Bowtie2 aligner (for install details, please see: http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
+```
+sudo apt-get update
+sudo apt-get install bowtie2
+```
+
 ### Obtaining and Installing BEDTools
 Complete instructions can be found in https://bedtools.readthedocs.io/en/latest/content/installation.html. Users with privileges can accomplish with sudo: 
 
@@ -47,12 +53,10 @@ conda install -c conda-forge -c bioconda -c defaults snippy
 ```
 
 # Quick Start:
-```
-```
-
-In SARS-CoV-19_illumina_analysis folder (after checking all programs referred in preeliminars), open a terminal do the following: 
 
 ```
+git clone https://github.com/cfarkas/SARS-CoV-19_illumina_analysis.git
+cd SARS-CoV-19_illumina_analysis
 bash SARS-CoV-19_commands 
 ```
 This sentence will execute all the analyses. 
