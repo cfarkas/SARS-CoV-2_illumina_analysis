@@ -1,5 +1,5 @@
 # SARS-CoV-19_illumina_analysis
-Computational analysis to discover germline mutations in illumina NGS data from SARS-CoV-19 
+Computational analysis to discover germline mutations in illumina NGS data from SARS-CoV-19: 
 
 1) This commands will download illumina datasets available in SRA archive corresponding to SARS-CoV-19 (please see: https://www.ncbi.nlm.nih.gov/genbank/sars-cov-2-seqs/) and will obtain germline variants per sample by applying variant calling (by using bcftools) and strict filtering. 
 
@@ -12,7 +12,9 @@ Computational analysis to discover germline mutations in illumina NGS data from 
 ### Obtaining and Installing BEDTools
 Complete instructions can be found in https://bedtools.readthedocs.io/en/latest/content/installation.html. Users with privileges can accomplish with sudo: 
 
->sudo apt-get install bedtools
+```
+sudo apt-get install bedtools
+```
 
 ### Obtaining and installing up-to-date SAMtools, bcftools and htslib (version 1.9)
 Old samtools version will not work. Users needs to install version up to date of these three packages. Users can first install htslib v1.9 and then samtools with bcftools v1.9, respectively. For downloading these packages, see http://www.htslib.org/download/). The latter can be accomplish by downloading the three packages, decompressing it, and doing the following:
