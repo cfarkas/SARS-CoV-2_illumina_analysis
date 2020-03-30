@@ -5,7 +5,7 @@ Computational analysis to discover germline mutations in illumina NGS data from 
 
 2) This variants can be also challenged by using snippy variant discovery (please see: https://github.com/tseemann/snippy) since this pipeline use bayesian-based variant calling (please see: https://github.com/ekg/freebayes). 
 
-3) We also provide a way to evalute the performance of primer sets currently used for viral testing (https://www.cdc.gov/coronavirus/2019-ncov/lab/rt-pcr-panel-primer-probes.html). 
+3) We also provide a way to evalute the performance of primer sets currently used for viral testing (see CDC_primers.fasta file) (https://www.cdc.gov/coronavirus/2019-ncov/lab/rt-pcr-panel-primer-probes.html). 
 
 # Preeliminars: 
 
@@ -47,8 +47,10 @@ conda install -c conda-forge -c bioconda -c defaults snippy
 ```
 
 # Quick Start:
+```
+```
 
-In a folder, after checking all programs referred in preeliminars, open a terminal do the following: 
+In SARS-CoV-19_illumina_analysis folder (after checking all programs referred in preeliminars), open a terminal do the following: 
 
 ```
 bash SARS-CoV-19_commands 
