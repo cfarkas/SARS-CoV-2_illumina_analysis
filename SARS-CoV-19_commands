@@ -167,7 +167,7 @@ done
 #######################
 
 mkdir Snippy_results
-cd ./Snippy_results/
+cd Snippy_results
 
 # China
 
