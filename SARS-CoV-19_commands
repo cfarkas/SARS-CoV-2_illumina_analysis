@@ -68,12 +68,12 @@ samtools faidx covid19-refseq.fasta
 
 # Alignment 
 a= ls -1 *.fq
-for a in *.fq; do bowtie2 -p 55 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq ${a} > ${a}.sam
+for a in *.fq; do bowtie2 -p 20 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq ${a} > ${a}.sam
 done
 
 # BAM file generation
 b= ls -1 *.sam
-for b in *.sam; do samtools sort ${b} > ${b}.sorted.bam -@ 55
+for b in *.sam; do samtools sort ${b} > ${b}.sorted.bam -@ 20
 done
 
 # Remove duplicates
@@ -83,7 +83,7 @@ done
 
 # Index bam files
 d= ls -1 *.fq.sam.sorted.bam
-for d in *.fq.sam.sorted.bam; do samtools index ${d} -@ 8
+for d in *.fq.sam.sorted.bam; do samtools index ${d} -@ 20
 done 
 
 # Variant Calling
@@ -171,40 +171,40 @@ cd Snippy_results
 
 # China
 
-snippy --cpus 40 --outdir ./SRR11059940 --ref SARS-CoV-19.gb --se SRR11059940.fq
-snippy --cpus 40 --outdir ./SRR11059944 --ref SARS-CoV-19.gb --se SRR11059944.fq
-snippy --cpus 40 --outdir ./SRR11059945 --ref SARS-CoV-19.gb --se SRR11059945.fq
-snippy --cpus 40 --outdir ./SRR11059946 --ref SARS-CoV-19.gb --se SRR11059946.fq
-snippy --cpus 40 --outdir ./SRR11059947 --ref SARS-CoV-19.gb --se SRR11059947.fq
+snippy --cpus 20 --outdir ./SRR11059940 --ref SARS-CoV-19.gb --se SRR11059940.fq
+snippy --cpus 20 --outdir ./SRR11059944 --ref SARS-CoV-19.gb --se SRR11059944.fq
+snippy --cpus 20 --outdir ./SRR11059945 --ref SARS-CoV-19.gb --se SRR11059945.fq
+snippy --cpus 20 --outdir ./SRR11059946 --ref SARS-CoV-19.gb --se SRR11059946.fq
+snippy --cpus 20 --outdir ./SRR11059947 --ref SARS-CoV-19.gb --se SRR11059947.fq
 
 # USA
-snippy --cpus 40 --outdir ./SRR11241254 --ref SARS-CoV-19.gb --se SRR11241254.fq
-snippy --cpus 40 --outdir ./SRR11241255 --ref SARS-CoV-19.gb --se SRR11241255.fq
-snippy --cpus 40 --outdir ./SRR11247075 --ref SARS-CoV-19.gb --se SRR11247075.fq
-snippy --cpus 40 --outdir ./SRR11247076 --ref SARS-CoV-19.gb --se SRR11247076.fq
-snippy --cpus 40 --outdir ./SRR11247077 --ref SARS-CoV-19.gb --se SRR11247077.fq
-snippy --cpus 40 --outdir ./SRR11247078 --ref SARS-CoV-19.gb --se SRR11247078.fq
-snippy --cpus 40 --outdir ./SRR11278090 --ref SARS-CoV-19.gb --se SRR11278090.fq
-snippy --cpus 40 --outdir ./SRR11278091 --ref SARS-CoV-19.gb --se SRR11278091.fq
-snippy --cpus 40 --outdir ./SRR11278092 --ref SARS-CoV-19.gb --se SRR11278092.fq
-snippy --cpus 40 --outdir ./SRR11278164 --ref SARS-CoV-19.gb --se SRR11278164.fq
-snippy --cpus 40 --outdir ./SRR11278165 --ref SARS-CoV-19.gb --se SRR11278165.fq
-snippy --cpus 40 --outdir ./SRR11278166 --ref SARS-CoV-19.gb --se SRR11278166.fq
-snippy --cpus 40 --outdir ./SRR11278167 --ref SARS-CoV-19.gb --se SRR11278167.fq
-snippy --cpus 40 --outdir ./SRR11278168 --ref SARS-CoV-19.gb --se SRR11278168.fq
+snippy --cpus 20 --outdir ./SRR11241254 --ref SARS-CoV-19.gb --se SRR11241254.fq
+snippy --cpus 20 --outdir ./SRR11241255 --ref SARS-CoV-19.gb --se SRR11241255.fq
+snippy --cpus 20 --outdir ./SRR11247075 --ref SARS-CoV-19.gb --se SRR11247075.fq
+snippy --cpus 20 --outdir ./SRR11247076 --ref SARS-CoV-19.gb --se SRR11247076.fq
+snippy --cpus 20 --outdir ./SRR11247077 --ref SARS-CoV-19.gb --se SRR11247077.fq
+snippy --cpus 20 --outdir ./SRR11247078 --ref SARS-CoV-19.gb --se SRR11247078.fq
+snippy --cpus 20 --outdir ./SRR11278090 --ref SARS-CoV-19.gb --se SRR11278090.fq
+snippy --cpus 20 --outdir ./SRR11278091 --ref SARS-CoV-19.gb --se SRR11278091.fq
+snippy --cpus 20 --outdir ./SRR11278092 --ref SARS-CoV-19.gb --se SRR11278092.fq
+snippy --cpus 20 --outdir ./SRR11278164 --ref SARS-CoV-19.gb --se SRR11278164.fq
+snippy --cpus 20 --outdir ./SRR11278165 --ref SARS-CoV-19.gb --se SRR11278165.fq
+snippy --cpus 20 --outdir ./SRR11278166 --ref SARS-CoV-19.gb --se SRR11278166.fq
+snippy --cpus 20 --outdir ./SRR11278167 --ref SARS-CoV-19.gb --se SRR11278167.fq
+snippy --cpus 20 --outdir ./SRR11278168 --ref SARS-CoV-19.gb --se SRR11278168.fq
 
 # Australia
-snippy --cpus 40 --outdir ./SRR11397714 --ref SARS-CoV-19.gb --se SRR11397714.fq
-snippy --cpus 40 --outdir ./SRR11397715 --ref SARS-CoV-19.gb --se SRR11397715.fq
-snippy --cpus 40 --outdir ./SRR11397716 --ref SARS-CoV-19.gb --se SRR11397716.fq
-snippy --cpus 40 --outdir ./SRR11397717 --ref SARS-CoV-19.gb --se SRR11397717.fq
-snippy --cpus 40 --outdir ./SRR11397718 --ref SARS-CoV-19.gb --se SRR11397718.fq
-snippy --cpus 40 --outdir ./SRR11397719 --ref SARS-CoV-19.gb --se SRR11397719.fq
-snippy --cpus 40 --outdir ./SRR11397720 --ref SARS-CoV-19.gb --se SRR11397720.fq
-snippy --cpus 40 --outdir ./SRR11397721 --ref SARS-CoV-19.gb --se SRR11397721.fq
-snippy --cpus 40 --outdir ./SRR11397728 --ref SARS-CoV-19.gb --se SRR11397728.fq
-snippy --cpus 40 --outdir ./SRR11397729 --ref SARS-CoV-19.gb --se SRR11397729.fq
-snippy --cpus 40 --outdir ./SRR11397730 --ref SARS-CoV-19.gb --se SRR11397730.fq
+snippy --cpus 20 --outdir ./SRR11397714 --ref SARS-CoV-19.gb --se SRR11397714.fq
+snippy --cpus 20 --outdir ./SRR11397715 --ref SARS-CoV-19.gb --se SRR11397715.fq
+snippy --cpus 20 --outdir ./SRR11397716 --ref SARS-CoV-19.gb --se SRR11397716.fq
+snippy --cpus 20 --outdir ./SRR11397717 --ref SARS-CoV-19.gb --se SRR11397717.fq
+snippy --cpus 20 --outdir ./SRR11397718 --ref SARS-CoV-19.gb --se SRR11397718.fq
+snippy --cpus 20 --outdir ./SRR11397719 --ref SARS-CoV-19.gb --se SRR11397719.fq
+snippy --cpus 20 --outdir ./SRR11397720 --ref SARS-CoV-19.gb --se SRR11397720.fq
+snippy --cpus 20 --outdir ./SRR11397721 --ref SARS-CoV-19.gb --se SRR11397721.fq
+snippy --cpus 20 --outdir ./SRR11397728 --ref SARS-CoV-19.gb --se SRR11397728.fq
+snippy --cpus 20 --outdir ./SRR11397729 --ref SARS-CoV-19.gb --se SRR11397729.fq
+snippy --cpus 20 --outdir ./SRR11397730 --ref SARS-CoV-19.gb --se SRR11397730.fq
 
 cd ..
 
@@ -215,7 +215,7 @@ cd ..
 ################################ 
 
 
-bowtie2 -p 55 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq -f CDC_primers.fasta > CDC_primers.sam
+bowtie2 -p 20 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq -f CDC_primers.fasta > CDC_primers.sam
 samtools view -bS CDC_primers.sam > CDC_primers.bam
 samtools sort -o CDC_primers.sorted.bam CDC_primers.bam
 bedtools bamtobed -i CDC_primers.sorted.bam > CDC_primers.bed
