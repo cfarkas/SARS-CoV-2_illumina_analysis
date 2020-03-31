@@ -231,6 +231,20 @@ samtools view -bS genbank_sequences_alignment.sam > genbank_sequences_alignment.
 samtools sort -o genbank_sequences_alignment.sorted.bam genbank_sequences_alignment.bam
 bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou genbank_sequences_alignment.sorted.bam| bcftools call -mv -Ov -o genbank_sequences_alignment.sorted.bam.vcf
 bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_alignment.sorted.bam.vcf > genbank_sequences_alignment.sorted.bam.DP4
+
+
+###################################################################
+###################################################################
+### Alignment of Genbank Sequences, March 31, 2020: USA samples ###
+###################################################################
+################################################################### 
+
+bowtie2 -p 5 -D 5 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq -f genbank_sequences_USA_March_31_2020.fasta > genbank_sequences_USA_alignment.sam
+samtools view -bS genbank_sequences_USA_alignment.sam > genbank_sequences_USA_alignment.bam
+samtools sort -o genbank_sequences_USA_alignment.sorted.bam genbank_sequences_USA_alignment.bam
+bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou genbank_sequences_USA_alignment.sorted.bam| bcftools call -mv -Ov -o genbank_sequences_USA_alignment.sorted.bam.vcf
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_USA_alignment.sorted.bam.vcf > genbank_sequences_USA_alignment.sorted.bam.DP4
+
 ###############################################################
 #
 } | tee logfile
