@@ -11,7 +11,7 @@
 # Downloads #
 #############
 
-### March 20, 2020	Paired end and Single End 
+### March 20, 2020 Paired end and Single End 
 
 
 fastq-dump -Z SRR10903401 > SRR10903401.fq
@@ -46,7 +46,7 @@ fastq-dump -Z SRR11278167 > SRR11278167.fq
 fastq-dump -Z SRR11278168 > SRR11278168.fq
 fastq-dump -Z SRR11314339 > SRR11314339.fq	
 
-### March 25, 2020	Paired end and Single End
+### March 25, 2020 Paired end and Single End
 
 fastq-dump -Z SRR11397714 > SRR11397714.fq
 fastq-dump -Z SRR11397715 > SRR11397715.fq
