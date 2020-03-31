@@ -220,6 +220,18 @@ samtools view -bS CDC_primers.sam > CDC_primers.bam
 samtools sort -o CDC_primers.sorted.bam CDC_primers.bam
 bedtools bamtobed -i CDC_primers.sorted.bam > CDC_primers.bed
 
+##############################################################
+##############################################################
+### Alignment of Genbank Sequences, March 31, 2020 primers ###
+##############################################################
+##############################################################
+
+bowtie2 -p 5 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x /home/lrt/coronavirus_covid19/covid19-refseq -f genbank_sequences_March_31_2020.fasta > genbank_sequences_alignment.sam
+samtools view -bS genbank_sequences_alignment.sam > genbank_sequences_alignment.bam
+samtools sort -o genbank_sequences_alignment.sorted.bam genbank_sequences_alignment.bam
+bedtools bamtobed -i genbank_sequences_alignment.sorted.bam > genbank_sequences_alignment.bed
+
+
 #
 } | tee logfile
 #
