@@ -52,13 +52,6 @@ Please refer to Torsten Seemann Repo: https://github.com/tseemann/snippy
 conda install -c conda-forge -c bioconda -c defaults snippy
 ```
 
-### Obtaining MAFFT Multiple Sequence Aligner 
-
-Please refer to: https://mafft.cbrc.jp/alignment/software/
-```
-sudo apt-get install mafft
-```
-
 # Quick Start:
 
 ```
