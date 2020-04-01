@@ -220,6 +220,18 @@ samtools view -bS CDC_primers.sam > CDC_primers.bam
 samtools sort -o CDC_primers.sorted.bam CDC_primers.bam
 bedtools bamtobed -i CDC_primers.sorted.bam > CDC_primers.bed
 
+#######################################################################
+#######################################################################
+### Alignment of Hong Kong University and Pasteur Institute Primers ###
+#######################################################################
+#######################################################################
+
+
+bowtie2 -p 20 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq -f HK_Pasteur.fasta > HK_Pasteur.sam
+samtools view -bS HK_Pasteur.sam > HK_Pasteur.bam
+samtools sort -o HK_Pasteur.sorted.bam HK_Pasteur.bam
+bedtools bamtobed -i HK_Pasteur.sorted.bam > HK_Pasteur.bed
+
 ######################################################
 ######################################################
 ### Alignment of Genbank Sequences, March 31, 2020 ###
