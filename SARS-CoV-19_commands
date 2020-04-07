@@ -291,6 +291,25 @@ samtools sort -o genbank_sequences_USA_alignment.sorted.bam genbank_sequences_US
 bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou genbank_sequences_USA_alignment.sorted.bam| bcftools call -mv -Ov -o genbank_sequences_USA_alignment.sorted.bam.vcf
 bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_USA_alignment.sorted.bam.vcf > genbank_sequences_USA_alignment.sorted.bam.DP4
 
+
+###############################################################
+###############################################################
+### Final Primer Intersections: Adding USA genbank datasets ###
+###############################################################
+############################################################### 
+
+cp genbank_sequences_USA_alignment.sorted.bam.vcf ./genbank_USA.vcf
+bgzip genbank_USA.vcf
+tabix -p vcf genbank_USA.vcf.gz
+bgzip merge.vcf
+tabix -p vcf merge.vcf.gz
+
+vcf-merge merge.vcf.gz genbank_USA.vcf.gz > final_merge.vcf
+
+bedtools intersect -a CDC_primers.bed -b final_merge.vcf > CDC_primers.intersection.final
+bedtools intersect -a HK_Pasteur_Korea.bed -b final_merge.vcf > HK_Pasteur_Korea.intersection.final
+bedtools intersect -a primer-blast-50-170-bp.bed -b final_merge.vcf > primer-blast-50-170-bp.intersection.final
+
 ###############################################################
 #
 } | tee logfile
