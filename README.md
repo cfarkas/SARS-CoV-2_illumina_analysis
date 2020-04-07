@@ -24,6 +24,17 @@ Complete instructions can be found in https://bedtools.readthedocs.io/en/latest/
 sudo apt-get install bedtools
 ```
 
+### Obtaining and Installing VCFtools
+Complete instructions can be found in https://vcftools.github.io/downloads.html. Users with privileges can accomplish with sudo as follows: 
+
+```
+git clone https://github.com/vcftools/vcftools.git
+./autogen.sh
+./configure
+make
+sudo make install
+```
+
 ### Obtaining and installing up-to-date SAMtools, bcftools and htslib (version 1.9)
 Old samtools version will not work. Users needs to install version up to date of these three packages. Users can first install htslib v1.9 and then samtools with bcftools v1.9, respectively. For downloading these packages, see http://www.htslib.org/download/). The latter can be accomplish by downloading the three packages, decompressing it, and doing the following:
 ```
