@@ -231,6 +231,17 @@ samtools view -bS HK_Pasteur_Korea.sam > HK_Pasteur_Korea.bam
 samtools sort -o HK_Pasteur_Korea.sorted.bam HK_Pasteur_Korea.bam
 bedtools bamtobed -i HK_Pasteur_Korea.sorted.bam > HK_Pasteur_Korea.bed
 
+###########################################################################################
+###########################################################################################
+### Alignment of Primer-blast primers: https://www.ncbi.nlm.nih.gov/tools/primer-blast/ ###
+###########################################################################################
+###########################################################################################
+
+bowtie2 -p 20 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq -f primer-blast-50-170-bp.fasta > primer-blast-50-170-bp.sam
+samtools view -bS primer-blast-50-170-bp.sam > primer-blast-50-170-bp.bam
+samtools sort -o primer-blast-50-170-bp.sorted.bam primer-blast-50-170-bp.bam
+bedtools bamtobed -i primer-blast-50-170-bp.sorted.bam > primer-blast-50-170-bp.bed
+
 ######################################################
 ######################################################
 ### Alignment of Genbank Sequences, March 31, 2020 ###
