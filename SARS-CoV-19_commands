@@ -242,6 +242,30 @@ samtools view -bS primer-blast-50-170-bp.sam > primer-blast-50-170-bp.bam
 samtools sort -o primer-blast-50-170-bp.sorted.bam primer-blast-50-170-bp.bam
 bedtools bamtobed -i primer-blast-50-170-bp.sorted.bam > primer-blast-50-170-bp.bed
 
+
+######################################################
+######################################################
+### Merging all VCFs and intersecting with primers ###
+######################################################
+###################################################### 
+
+a= ls -1 *.fq.sam.sorted.bam.rmdup.vcf.filtered
+for a in *.fq.sam.sorted.bam.rmdup.vcf.filtered; do bgzip ${a}
+done
+
+b= ls -1 *.fq.sam.sorted.bam.rmdup.vcf.filtered.gz
+for b in *.fq.sam.sorted.bam.rmdup.vcf.filtered.gz; do tabix -p vcf ${b}
+done
+
+vcf-merge $(ls -1 *.fq.sam.sorted.bam.rmdup.vcf.filtered.gz | perl -pe 's/\n/ /g') > merge.vcf
+
+### Intersecting primers
+
+bedtools intersect -a CDC_primers.bed -b merge.vcf > CDC_primers.intersection
+bedtools intersect -a HK_Pasteur_Korea.bed -b merge.vcf > HK_Pasteur_Korea.intersection
+bedtools intersect -a primer-blast-50-170-bp.bed -b merge.vcf > primer-blast-50-170-bp.intersection
+
+
 ######################################################
 ######################################################
 ### Alignment of Genbank Sequences, March 31, 2020 ###
