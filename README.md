@@ -70,7 +70,7 @@ conda install -c conda-forge -c bioconda -c defaults snippy
 ```
 git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
-bash SARS-CoV-2_commands 
+./SARS-CoV-2_commands.sh 
 ```
 This sentence will execute all the analyses. 
 
