@@ -1,4 +1,4 @@
-# SARS-CoV-19_illumina_analysis
+# SARS-CoV-2_illumina_analysis
 Computational analysis to discover germline mutations in illumina NGS data from SARS-CoV-19: 
 
 1) This commands will download illumina datasets available in SRA archive corresponding to SARS-CoV-19 (please see: https://www.ncbi.nlm.nih.gov/genbank/sars-cov-2-seqs/) and will obtain germline variants per sample by applying variant calling (by using bcftools) and strict filtering. 
