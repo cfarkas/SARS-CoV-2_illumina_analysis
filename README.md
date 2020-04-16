@@ -72,6 +72,6 @@ git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
 ./SARS-CoV-2_commands.sh 
 ```
-This sentence will execute all the analyses. 
+These lines will execute all the analyses. 
 
 Contact: cfarkas@udec.cl, carlosfarkas@gmail.com
