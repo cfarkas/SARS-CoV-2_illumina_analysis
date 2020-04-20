@@ -65,25 +65,27 @@ fastq-dump -Z SRR11397729 > SRR11397729.fq
 fastq-dump -Z SRR11397730 > SRR11397730.fq
 fastq-dump -Z SRR11393704 > SRR11393704.fq
 
-############################################
-# Building index with covid19-refseq.fasta #
-############################################
+####################################################
+# Trimming downloaded Illumina datasets with fastp #
+####################################################
 
-echo "Building index with covid19-refseq.fasta"
-echo ""
-
-bowtie2-build covid19-refseq.fasta covid19-refseq
-samtools faidx covid19-refseq.fasta
-
-##################################################################
-# Aligning illumina datasets againts reference, using 20 threads #
-##################################################################
-
-echo "Aligning illumina datasets againts reference, using 20 threads."
+echo "Trimming downloaded Illumina datasets with fastp."
 echo ""
 
 a= ls -1 *.fq
-for a in *.fq; do bowtie2 -p 20 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq ${a} > ${a}.sam
+for a in *.fq; do fastp -w 16 -i ${a} -o ${a}.fastp
+done
+
+
+###############################################################################
+# Aligning illumina datasets againts reference with minimap, using 20 threads #
+###############################################################################
+
+echo "Aligning illumina datasets againts reference with minimap, using 20 threads."
+echo ""
+
+b= ls -1 *.fq.fastp
+for b in *.fq.fastp; do minimap2 -ax sr covid19-refseq.fasta ${b} > ${b}.sam -t 20
 done
 
 #######################################
@@ -93,8 +95,8 @@ done
 echo "Sorting SAM files, using 20 threads."
 echo ""
 
-b= ls -1 *.sam
-for b in *.sam; do samtools sort ${b} > ${b}.sorted.bam -@ 20
+c= ls -1 *.sam
+for c in *.sam; do samtools sort ${c} > ${c}.sorted.bam -@ 20
 done
 
 #########################################
@@ -104,8 +106,8 @@ done
 echo "Calculating coverage of aligned reads."
 echo ""
 
-c= ls -1 *.fq.sam.sorted.bam
-for c in *.fq.sam.sorted.bam; do samtools depth ${a} |  awk '{sum+=$3} END { print "Average = ",sum/NR}'
+d= ls -1 *.sorted.bam
+for d in *.sorted.bam; do samtools depth ${d} |  awk '{sum+=$3} END { print "Average = ",sum/NR}'
 done
 
 ########################################################
@@ -115,8 +117,8 @@ done
 echo "Removing duplicates in bam files for variant calling."
 echo ""
 
-d= ls -1 *.fq.sam.sorted.bam
-for d in *.fq.sam.sorted.bam; do samtools rmdup ${c} ${c}.rmdup
+e= ls -1 *.sorted.bam
+for e in *.sorted.bam; do samtools rmdup ${e} ${e}.rmdup
 done
 
 ######################
@@ -126,8 +128,8 @@ done
 echo "Indexing BAM files."
 echo ""
 
-e= ls -1 *.fq.sam.sorted.bam
-for e in *.fq.sam.sorted.bam; do samtools index ${d} -@ 20
+f= ls -1 *.sorted.bam
+for f in *.sorted.bam; do samtools index ${f} -@ 20
 done
 
 ######################################
@@ -136,8 +138,8 @@ done
 
 echo "Calling variants by using bcftools."
 echo ""
-f= ls -1 *.fq.sam.sorted.bam.rmdup
-for f in *.fq.sam.sorted.bam.rmdup; do bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou ${e}| bcftools call -mv -Ov -o ${e}.vcf
+g= ls -1 *.rmdup
+for g in *.rmdup; do bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou ${g}| bcftools call -mv -Ov -o ${g}.vcf
 done
 rm *.sam
 
@@ -148,8 +150,8 @@ rm *.sam
 echo "Filtering VCFs using by QUAL and DP4 fields."
 echo ""
 
-g= ls -1 *.fq.sam.sorted.bam.rmdup.vcf
-for g in *.fq.sam.sorted.bam.rmdup.vcf; do bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1])/(DP4[2]+DP4[3]) > 0.3' ${f} > ${f}.filtered
+h= ls -1 *.vcf
+for h in *.vcf; do bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1])/(DP4[2]+DP4[3]) > 0.3' ${h} > ${h}.filtered
 done
 
 mkdir filtered_vcfs
@@ -163,49 +165,49 @@ echo "Extracting DP4 field to obtain allele frequency of variants."
 echo ""
 
 cd filtered_vcfs
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR10903401.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR10903401.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR10903402.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR10903402.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR10971381.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR10971381.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059940.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11059940.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059941.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11059941.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059942.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11059942.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059943.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11059943.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059944.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11059944.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059945.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11059945.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059946.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11059946.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059947.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11059947.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11140744.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11140744.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11140746.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11140746.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11140748.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11140748.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11140750.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11140750.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11177792.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11177792.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11241254.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11241254.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11241255.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11241255.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11247075.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11247075.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11247076.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11247076.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11247077.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11247077.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11247078.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11247078.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278090.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11278090.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278091.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11278091.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278092.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11278092.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278164.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11278164.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278165.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11278165.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278166.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11278166.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278167.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11278167.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278168.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11278168.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11314339.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11314339.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397714.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11397714.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397715.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11397715.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397716.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11397716.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397717.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11397717.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397718.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11397718.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397719.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11397719.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397720.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11397720.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397721.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11397721.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397728.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11397728.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397729.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11397729.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397730.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11397730.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11393704.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR11393704.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR10903401.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR10903401.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR10903402.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR10903402.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR10971381.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR10971381.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059940.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059940.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059941.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059941.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059942.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059942.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059943.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059943.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059944.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059944.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059945.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059945.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059946.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059946.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059947.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059947.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11140744.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11140744.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11140746.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11140746.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11140748.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11140748.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11140750.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11140750.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11177792.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11177792.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11241254.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11241254.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11241255.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11241255.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11247075.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11247075.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11247076.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11247076.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11247077.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11247077.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11247078.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11247078.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278090.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278090.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278091.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278091.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278092.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278092.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278164.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278164.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278165.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278165.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278166.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278166.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278167.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278167.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278168.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278168.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11314339.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11314339.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397714.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397714.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397715.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397715.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397716.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397716.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397717.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397717.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397718.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397718.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397719.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397719.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397720.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397720.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397721.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397721.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397728.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397728.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397729.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397729.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397730.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397730.DP4
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11393704.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11393704.DP4
 
 cd ..
 
@@ -309,15 +311,15 @@ bedtools bamtobed -i primer-blast-50-170-bp.sorted.bam > primer-blast-50-170-bp.
 echo "Merging all VCFs from illumina datasets and intersecting with primer BED files"
 echo ""
 
-a= ls -1 *.fq.sam.sorted.bam.rmdup.vcf.filtered
-for a in *.fq.sam.sorted.bam.rmdup.vcf.filtered; do bgzip ${a}
+a= ls -1 *.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered
+for a in *.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered; do bgzip ${a}
 done
 
-b= ls -1 *.fq.sam.sorted.bam.rmdup.vcf.filtered.gz
-for b in *.fq.sam.sorted.bam.rmdup.vcf.filtered.gz; do tabix -p vcf ${b}
+b= ls -1 *.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered.gz
+for b in *.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered.gz; do tabix -p vcf ${b}
 done
 
-vcf-merge $(ls -1 *.fq.sam.sorted.bam.rmdup.vcf.filtered.gz | perl -pe 's/\n/ /g') > merge.vcf
+vcf-merge $(ls -1 *.fq.fastp.sam.sorted.bam.rmdup.vcf.filtered.gz | perl -pe 's/\n/ /g') > merge.vcf
 
 ### Intersecting primers
 
