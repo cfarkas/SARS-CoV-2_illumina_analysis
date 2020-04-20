@@ -27,6 +27,16 @@ cd minimap2 && make
 sudo cp minimap2 /usr/local/bin/
 ```
 
+### Installing fastp: An ultra-fast all-in-one FASTQ preprocessor (for details, please see: https://github.com/OpenGene/fastp)
+```
+git clone https://github.com/OpenGene/fastp.git
+# build fastp
+cd fastp
+make
+# with sudo privileges
+sudo cp fastp /usr/local/bin/
+```
+
 ### Obtaining and Installing BEDTools
 Complete instructions can be found in https://bedtools.readthedocs.io/en/latest/content/installation.html.
 ```
