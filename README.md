@@ -11,17 +11,25 @@ Computational analysis to discover germline mutations in illumina NGS data from 
 
 # Preeliminars: 
 
-### Obtaining Bowtie2 aligner (for install details, please see: http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
+### Installing minimap2 (for install details, please see: https://github.com/lh3/minimap2)
 ```
-sudo apt-get update
-sudo apt-get install bowtie2
+### Installing minimap2
+git clone https://github.com/lh3/minimap2
+# build minimap2
+cd minimap2 && make
+# with sudo privileges
+sudo cp minimap2 /usr/local/bin/
 ```
 
 ### Obtaining and Installing BEDTools
-Complete instructions can be found in https://bedtools.readthedocs.io/en/latest/content/installation.html. Users with privileges can accomplish with sudo: 
-
+Complete instructions can be found in https://bedtools.readthedocs.io/en/latest/content/installation.html.
 ```
-sudo apt-get install bedtools
+wget https://github.com/arq5x/bedtools2/releases/download/v2.29.1/bedtools-2.29.1.tar.gz
+tar -zxvf bedtools-2.29.1.tar.gz.1
+cd bedtools2
+make
+# with sudo privileges
+sudo cp ./bin/* /usr/local/bin/
 ```
 
 ### Obtaining and Installing VCFtools
@@ -32,6 +40,7 @@ git clone https://github.com/vcftools/vcftools.git
 ./autogen.sh
 ./configure
 make
+# with sudo privileges
 sudo make install
 ```
 
@@ -42,7 +51,7 @@ cd htslib-1.9    # and similarly for bcftools and samtools
 sudo ./configure --prefix=/usr/local/bin
 sudo make
 sudo make install
-# this step is only for samtools and bcftools...
+# this step is only for samtools and bcftools (with sudo privileges)...
 sudo cp samtools /usr/local/bin/
 ```
 Then in a terminal type
@@ -55,6 +64,7 @@ to check 1.9 versions (using htslib v1.9)
 wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.9.6/sratoolkit.2.9.6-ubuntu64.tar.gz
 gunzip sratoolkit.2.9.6-ubuntu64.tar.gz
 tar -xvf sratoolkit.2.9.6-ubuntu64.tar
+# with sudo privileges
 sudo cp sratoolkit.2.9.6-ubuntu64/bin/fastq-dump /usr/local/bin/
 ```
 
@@ -63,6 +73,13 @@ sudo cp sratoolkit.2.9.6-ubuntu64/bin/fastq-dump /usr/local/bin/
 Please refer to Torsten Seemann Repo: https://github.com/tseemann/snippy
 ```
 conda install -c conda-forge -c bioconda -c defaults snippy
+```
+without sudo privileges:
+
+```
+cd $HOME
+git clone https://github.com/tseemann/snippy.git
+$HOME/snippy/bin/snippy --help
 ```
 
 # Quick Start:
