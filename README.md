@@ -1,9 +1,9 @@
 # SARS-CoV-2_illumina_analysis
-Computational analysis to discover germline mutations in illumina NGS data from SARS-CoV-2: 
+Computational analysis to discover founder variants in illumina NGS data from SARS-CoV-2: 
 
-1) This commands will download illumina datasets available in SRA archive corresponding to SARS-CoV-2 (please see: https://www.ncbi.nlm.nih.gov/genbank/sars-cov-2-seqs/) and will obtain germline variants per sample by applying variant calling (by using bcftools) and strict filtering. 
+1) This commands will download illumina datasets available in SRA archive corresponding to SARS-CoV-2 untill early April 2020 (please see: https://www.ncbi.nlm.nih.gov/genbank/sars-cov-2-seqs/) and will obtain founder variants per sample by applying variant calling (by using bcftools) and strict filtering. 
 
-2) This variants can be also challenged by using snippy variant discovery (please see: https://github.com/tseemann/snippy) since this pipeline use bayesian-based variant calling (please see: https://github.com/ekg/freebayes). 
+2) This founder variants can be also cross-validated by using snippy variant discovery (please see: https://github.com/tseemann/snippy) since this pipeline use bayesian-based variant calling (please see: https://github.com/ekg/freebayes). 
 
 3) We also provide a way to evalute the performance of primer sets currently used for viral testing (see CDC_primers.fasta file) (https://www.cdc.gov/coronavirus/2019-ncov/lab/rt-pcr-panel-primer-probes.html). 
 
