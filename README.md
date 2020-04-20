@@ -11,7 +11,13 @@ Computational analysis to discover germline mutations in illumina NGS data from 
 
 # Preeliminars: 
 
-### Installing minimap2 (for install details, please see: https://github.com/lh3/minimap2)
+### Obtaining Bowtie2 aligner (for install details, please see: http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
+```
+sudo apt-get update
+sudo apt-get install bowtie2
+```
+
+### Installing minimap2 aligner (for install details, please see: https://github.com/lh3/minimap2)
 ```
 ### Installing minimap2
 git clone https://github.com/lh3/minimap2
