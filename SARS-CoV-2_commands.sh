@@ -2,11 +2,14 @@
 
 {
 
-#########################
-#########################
-### Illumina Analysis ###
-#########################
-#########################
+##############################################
+##############################################
+### Variant Calling from illumina datasets ###
+##############################################
+##############################################
+
+echo "Downloading illumina datasets..."
+echo ""
 
 #############
 # Downloads #
@@ -62,46 +65,102 @@ fastq-dump -Z SRR11397729 > SRR11397729.fq
 fastq-dump -Z SRR11397730 > SRR11397730.fq
 fastq-dump -Z SRR11393704 > SRR11393704.fq
 
+############################################
+# Building index with covid19-refseq.fasta #
+############################################
 
-### Bowtie commands
+echo "Building index with covid19-refseq.fasta"
+echo ""
+
 bowtie2-build covid19-refseq.fasta covid19-refseq
 samtools faidx covid19-refseq.fasta
 
-# Alignment
+##################################################################
+# Aligning illumina datasets againts reference, using 20 threads #
+##################################################################
+
+echo "Aligning illumina datasets againts reference, using 20 threads."
+echo ""
+
 a= ls -1 *.fq
 for a in *.fq; do bowtie2 -p 20 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq ${a} > ${a}.sam
 done
 
-# BAM file generation
+#######################################
+# Sorting SAM files, using 20 threads #
+#######################################
+
+echo "Sorting SAM files, using 20 threads."
+echo ""
+
 b= ls -1 *.sam
 for b in *.sam; do samtools sort ${b} > ${b}.sorted.bam -@ 20
 done
 
-# Remove duplicates
+#########################################
+# Calculating coverage of aligned reads #
+#########################################
+
+echo "Calculating coverage of aligned reads."
+echo ""
+
 c= ls -1 *.fq.sam.sorted.bam
-for c in *.fq.sam.sorted.bam; do samtools rmdup ${c} ${c}.rmdup
+for c in *.fq.sam.sorted.bam; do samtools depth ${a} |  awk '{sum+=$3} END { print "Average = ",sum/NR}'
 done
 
-# Index bam files
+########################################################
+# Removing duplicates in bam files for variant calling #
+########################################################
+
+echo "Removing duplicates in bam files for variant calling."
+echo ""
+
 d= ls -1 *.fq.sam.sorted.bam
-for d in *.fq.sam.sorted.bam; do samtools index ${d} -@ 20
+for d in *.fq.sam.sorted.bam; do samtools rmdup ${c} ${c}.rmdup
 done
 
-# Variant Calling
-e= ls -1 *.fq.sam.sorted.bam.rmdup
-for e in *.fq.sam.sorted.bam.rmdup; do bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou ${e}| bcftools call -mv -Ov -o ${e}.vcf
+######################
+# Indexing BAM files #
+######################
+
+echo "Indexing BAM files."
+echo ""
+
+e= ls -1 *.fq.sam.sorted.bam
+for e in *.fq.sam.sorted.bam; do samtools index ${d} -@ 20
+done
+
+######################################
+# Calling variants by using bcftools #
+######################################
+
+echo "Calling variants by using bcftools."
+echo ""
+f= ls -1 *.fq.sam.sorted.bam.rmdup
+for f in *.fq.sam.sorted.bam.rmdup; do bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou ${e}| bcftools call -mv -Ov -o ${e}.vcf
 done
 rm *.sam
 
-# VCF filtering
-f= ls -1 *.fq.sam.sorted.bam.rmdup.vcf
-for f in *.fq.sam.sorted.bam.rmdup.vcf; do bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1])/(DP4[2]+DP4[3]) > 0.3' ${f} > ${f}.filtered
+###############################################
+# Filtering VCFs using by QUAL and DP4 fields #
+###############################################
+
+echo "Filtering VCFs using by QUAL and DP4 fields."
+echo ""
+
+g= ls -1 *.fq.sam.sorted.bam.rmdup.vcf
+for g in *.fq.sam.sorted.bam.rmdup.vcf; do bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1])/(DP4[2]+DP4[3]) > 0.3' ${f} > ${f}.filtered
 done
 
 mkdir filtered_vcfs
 cp *.filtered ./filtered_vcfs/
 
-# Extracting DP4 field to extract allele frequency of variants
+###############################################################
+# Extracting DP4 field to obtain allele frequency of variants #
+###############################################################
+
+echo "Extracting DP4 field to obtain allele frequency of variants."
+echo ""
 
 cd filtered_vcfs
 bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR10903401.fq.sam.sorted.bam.rmdup.vcf.filtered > SRR10903401.DP4
@@ -150,22 +209,14 @@ bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11393704.fq.sam.sorted.bam.rmdup.vc
 
 cd ..
 
-#####################
-# Coverage Analysis #
-#####################
-
-a= ls -1 *.fq.sam.sorted.bam
-for a in *.fq.sam.sorted.bam; do samtools depth ${a} |  awk '{sum+=$3} END { print "Average = ",sum/NR}'
-done
-
-############################################################################################################
-############################################################################################################
-
 #######################
 #######################
 ### Snippy Analysis ###
 #######################
 #######################
+
+echo "Use Snippy to call variants (by using freebayes) and classify these variants using SnpEff."
+echo ""
 
 mkdir Snippy_results
 cd Snippy_results
@@ -209,46 +260,54 @@ snippy --cpus 20 --outdir ./SRR11397730 --ref SARS-CoV-19.gb --se SRR11397730.fq
 
 cd ..
 
-################################
-################################
-### Alignment of CDC primers ###
-################################
-################################
+########################################################
+########################################################
+### Obtaining BED files from Primer Sets alignments  ###
+########################################################
+########################################################
 
+###################################################
+# Obtaining BED files from CDC primers alignments #
+###################################################
+
+echo "Obtaining BED files from CDC primers alignments."
+echo ""
 
 bowtie2 -p 20 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq -f CDC_primers.fasta > CDC_primers.sam
 samtools view -bS CDC_primers.sam > CDC_primers.bam
 samtools sort -o CDC_primers.sorted.bam CDC_primers.bam
 bedtools bamtobed -i CDC_primers.sorted.bam > CDC_primers.bed
 
-####################################################################################################
-####################################################################################################
-### Alignment of Hong Kong University, Pasteur Institute Primers and Korean Primers (PMC7045880) ###
-####################################################################################################
-####################################################################################################
+#######################################################################################################################
+# Obtaining BED files from Hong Kong University, Pasteur Institute Primers and Korean Primers Alignments (PMC7045880) #
+#######################################################################################################################
+
+echo "Obtaining BED files from Hong Kong University, Pasteur Institute Primers and Korean Primers Alignments (PMC7045880)"
+echo ""
 
 bowtie2 -p 20 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq -f HK_Pasteur_Korea.fasta > HK_Pasteur_Korea.sam
 samtools view -bS HK_Pasteur_Korea.sam > HK_Pasteur_Korea.bam
 samtools sort -o HK_Pasteur_Korea.sorted.bam HK_Pasteur_Korea.bam
 bedtools bamtobed -i HK_Pasteur_Korea.sorted.bam > HK_Pasteur_Korea.bed
 
-###########################################################################################
-###########################################################################################
-### Alignment of Primer-blast primers: https://www.ncbi.nlm.nih.gov/tools/primer-blast/ ###
-###########################################################################################
-###########################################################################################
+##############################################################################################################
+# Obtaining BED files from Primer-blast primer alignments : https://www.ncbi.nlm.nih.gov/tools/primer-blast/ #
+##############################################################################################################
+
+echo "Obtaining BED files from Primer-blast primer alignments : https://www.ncbi.nlm.nih.gov/tools/primer-blast/"
+echo ""
 
 bowtie2 -p 20 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq -f primer-blast-50-170-bp.fasta > primer-blast-50-170-bp.sam
 samtools view -bS primer-blast-50-170-bp.sam > primer-blast-50-170-bp.bam
 samtools sort -o primer-blast-50-170-bp.sorted.bam primer-blast-50-170-bp.bam
 bedtools bamtobed -i primer-blast-50-170-bp.sorted.bam > primer-blast-50-170-bp.bed
 
+################################################################################################
+# Merging all VCFs from illumina datasets with VCFtools and intersecting with primer BED files #
+################################################################################################
 
-######################################################
-######################################################
-### Merging all VCFs and intersecting with primers ###
-######################################################
-######################################################
+echo "Merging all VCFs from illumina datasets and intersecting with primer BED files"
+echo ""
 
 a= ls -1 *.fq.sam.sorted.bam.rmdup.vcf.filtered
 for a in *.fq.sam.sorted.bam.rmdup.vcf.filtered; do bgzip ${a}
@@ -267,11 +326,19 @@ bedtools intersect -a HK_Pasteur_Korea.bed -b merge.vcf > HK_Pasteur_Korea.inter
 bedtools intersect -a primer-blast-50-170-bp.bed -b merge.vcf > primer-blast-50-170-bp.intersection
 
 
-######################################################
-######################################################
-### Alignment of Genbank Sequences, March 31, 2020 ###
-######################################################
-######################################################
+##############################################################################################################
+##############################################################################################################
+### Alignment of Genbank Sequences, joining variants with illumina datasets and final primer intersections ###
+##############################################################################################################
+##############################################################################################################
+
+
+##################################################
+# Alignment of Genbank Sequences, March 31, 2020 #
+##################################################
+
+echo "Alignment of Genbank Sequences, March 31, 2020"
+echo ""
 
 bowtie2 -p 5 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq -f genbank_sequences_March_31_2020.fasta > genbank_sequences_alignment.sam
 samtools view -bS genbank_sequences_alignment.sam > genbank_sequences_alignment.bam
@@ -280,11 +347,12 @@ bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -
 bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_alignment.sorted.bam.vcf > genbank_sequences_alignment.sorted.bam.DP4
 
 
-###################################################################
-###################################################################
-### Alignment of Genbank Sequences, March 31, 2020: USA samples ###
-###################################################################
-###################################################################
+###############################################################
+# Alignment of Genbank Sequences, March 31, 2020: USA samples #
+###############################################################
+
+echo "Alignment of Genbank Sequences, March 31, 2020: USA samples"
+echo ""
 
 bowtie2 -p 5 -D 5 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq -f genbank_sequences_USA_March_31_2020.fasta > genbank_sequences_USA_alignment.sam
 samtools view -bS genbank_sequences_USA_alignment.sam > genbank_sequences_USA_alignment.bam
@@ -293,11 +361,13 @@ bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -
 bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_USA_alignment.sorted.bam.vcf > genbank_sequences_USA_alignment.sorted.bam.DP4
 
 
-###############################################################
+
 ###############################################################
 ### Final Primer Intersections: Adding USA genbank datasets ###
 ###############################################################
-###############################################################
+
+echo "Final Primer Intersections: Adding USA genbank datasets"
+echo ""
 
 cp genbank_sequences_USA_alignment.sorted.bam.vcf ./genbank_USA.vcf
 bgzip genbank_USA.vcf
@@ -310,6 +380,10 @@ vcf-merge merge.vcf.gz genbank_USA.vcf.gz > final_merge.vcf
 bedtools intersect -a CDC_primers.bed -b final_merge.vcf > CDC_primers.intersection.final
 bedtools intersect -a HK_Pasteur_Korea.bed -b final_merge.vcf > HK_Pasteur_Korea.intersection.final
 bedtools intersect -a primer-blast-50-170-bp.bed -b final_merge.vcf > primer-blast-50-170-bp.intersection.final
+
+echo ""
+echo "All done."
+echo ""
 
 ###############################################################
 #
