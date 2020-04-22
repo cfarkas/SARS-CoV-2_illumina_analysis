@@ -60,6 +60,18 @@ make
 sudo make install
 ```
 
+### Installing vcflib
+```
+git config --global url.https://github.com/.insteadOf git://github.com/
+git clone --recursive git://github.com/vcflib/vcflib.git
+
+#Enter vcflib directory and make
+cd vcflib
+make   # Needs CMake compiler, with sudo privileges do: sudo apt-get install cmake
+cp scripts/* /usr/local/bin/
+cp bin/* /usr/local/bin/
+```
+
 ### Obtaining and installing up-to-date SAMtools, bcftools and htslib (version 1.9)
 Old samtools version will not work. Users needs to install version up to date of these three packages. Users can first install htslib v1.9 and then samtools with bcftools v1.9, respectively. For downloading these packages, see http://www.htslib.org/download/). The latter can be accomplish by downloading the three packages, decompressing it, and doing the following:
 ```
