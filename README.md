@@ -109,7 +109,7 @@ cd $HOME
 git clone https://github.com/tseemann/snippy.git
 $HOME/snippy/bin/snippy --help
 ```
-### Installing vcfR library
+### Installing vcfR library. For documentation: https://cran.r-project.org/web/packages/vcfR/vignettes/intro_to_vcfR.html
 
 In R, type
 
