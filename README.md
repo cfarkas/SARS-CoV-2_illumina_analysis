@@ -109,14 +109,36 @@ cd $HOME
 git clone https://github.com/tseemann/snippy.git
 $HOME/snippy/bin/snippy --help
 ```
+### Installing vcfR library
+
+In R, type
+
+```
+install.packages("vcfR")
+```
 
 # Quick Start:
 
+To reproduce all computational steps from the paper: https://www.biorxiv.org/content/10.1101/2020.04.09.034462v1 dowmload this repository and execute the given bash script as follows:
 ```
 git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
 ./SARS-CoV-2_commands.sh 
 ```
 These lines will execute all the analyses. 
+
+# Steps for user-provided datasets from SARS-CoV-2:
+
+In order to obtain all founder mutations in user-provided SARS-CoV-2 NGS datasets, users need to execute another bash script: SARS-CoV-2_get_ngs.sh, providing the Sequence read archive accessions of each datasets (SRR prefix), SARS-CoV-2 fasta reference, number of threads for calculations and path to PERL5LIB from vcftools as follows. 
+```
+git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
+cd SARS-CoV-2_illumina_analysis
+./SARS-CoV-2_get_ngs.sh SRA_list Reference Threads /path/to/perl5lib 
+```
+For more information about this script, do
+
+```
+./SARS-CoV-2_get_ngs.sh -h 
+```
 
 Contact: cfarkas@udec.cl, carlosfarkas@gmail.com
