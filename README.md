@@ -106,6 +106,14 @@ tar -xvf sratoolkit.2.9.6-ubuntu64.tar
 sudo cp sratoolkit.2.9.6-ubuntu64/bin/fastq-dump /usr/local/bin/
 ```
 
+### Obtaining tabix (to bgzip and tabix vcf files).
+wget https://sourceforge.net/projects/samtools/files/tabix/tabix-0.2.6.tar.bz2
+bzip2 -d tabix-0.2.6.tar.bz2
+tar -xvf tabix-0.2.6.tar
+cd tabix-0.2.6/
+cp bgzip tabix /usr/local/bin/
+
+
 ### Obtaining snippy 
 
 Please refer to Torsten Seemann Repo: https://github.com/tseemann/snippy
