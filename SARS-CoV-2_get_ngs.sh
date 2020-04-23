@@ -72,7 +72,7 @@ fi
 
 [ $# -eq 0 ] && { echo "Usage: ./`basename $0` [SRA_list] [Reference] [Threads] [path_to_perl5_lib]"; exit 1; }
 
-if [ $# -ne 4c ]; then
+if [ $# -ne 4 ]; then
   echo 1>&2 "Usage: ./`basename $0` [SRA_list] [Reference] [Threads] [path_to_perl5_lib]"
   exit 3
 fi
