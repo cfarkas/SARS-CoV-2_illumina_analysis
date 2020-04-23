@@ -143,6 +143,7 @@ In order to obtain all founder mutations in user-provided SARS-CoV-2 NGS dataset
 ```
 git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
+samtools faidx covid19-refseq.fasta
 ./SARS-CoV-2_get_ngs.sh SRA_list Reference Threads /path/to/perl5lib 
 ```
 For more information about this script, do
