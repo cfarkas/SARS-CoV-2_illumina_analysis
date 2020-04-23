@@ -94,9 +94,8 @@ wget https://github.com/samtools/bcftools/releases/download/1.10.2/bcftools-1.10
 
 Then in a terminal type
 >samtools
->bcftools
 
-to check 1.10 versions (using htslib v1.10)
+to check 1.10 version (using htslib v1.10)
 
 ### Obtaining SRA toolkit from ncbi (for downloading reads from SRA archive).
 ```
