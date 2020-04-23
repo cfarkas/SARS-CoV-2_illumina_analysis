@@ -19,7 +19,7 @@ if [ "$1" == "-h" ]; then
   echo ""
   echo "[Threads]: Number of CPUs for the task (integer)"
   echo ""
-  echo "[path_to_perl5_lib]: Path to PERL5LIB, in VCFtools folder. If vcftools is installed in /home/user/, will be: /home/user/vcftools/src/perl "
+  echo "[path_to_perl5_lib]: Path to PERL5LIB, in VCFtools folder. If vcftools is installed in /home/user/, will be: /home/user/vcftools/src/perl/ "
   exit 0
 fi
 
@@ -35,7 +35,7 @@ if [ "$1" == "-help" ]; then
   echo ""
   echo "[Threads]: Number of CPUs for the task (integer)"
   echo ""
-  echo "[path_to_perl5_lib]: Path to PERL5LIB, in VCFtools folder. If vcftools is installed in /home/user/, will be: /home/user/vcftools/src/perl "
+  echo "[path_to_perl5_lib]: Path to PERL5LIB, in VCFtools folder. If vcftools is installed in /home/user/, will be: /home/user/vcftools/src/perl/ "
   exit 0
 fi
 if [ "$1" == "--h" ]; then
@@ -50,7 +50,7 @@ if [ "$1" == "--h" ]; then
   echo ""
   echo "[Threads]: Number of CPUs for the task (integer)"
   echo ""
-  echo "[path_to_perl5_lib]: Path to PERL5LIB, in VCFtools folder. If vcftools is installed in /home/user/, will be: /home/user/vcftools/src/perl "
+  echo "[path_to_perl5_lib]: Path to PERL5LIB, in VCFtools folder. If vcftools is installed in /home/user/, will be: /home/user/vcftools/src/perl/ "
   exit 0
 fi
 
@@ -66,7 +66,7 @@ if [ "$1" == "--help" ]; then
   echo ""
   echo "[Threads]: Number of CPUs for the task (integer)"
   echo ""
-  echo "[path_to_perl5_lib]: Path to PERL5LIB, in VCFtools folder. If vcftools is installed in /home/user/, will be: /home/user/vcftools/src/perl "
+  echo "[path_to_perl5_lib]: Path to PERL5LIB, in VCFtools folder. If vcftools is installed in /home/user/, will be: /home/user/vcftools/src/perl/ "
   exit 0
 fi
 
