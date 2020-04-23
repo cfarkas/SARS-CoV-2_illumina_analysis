@@ -148,26 +148,6 @@ echo "Done"
 echo "Summarize genotypes in founder variants" 
 vcffixup founder.vcf > founder.fixup.vcf
 echo "Done"
-
-echo "Plotting Variants"
-
-R
-# install.packages("vcfR")
-library(vcfR)
-my_vcf <- read.vcfR("founder.fixup.vcf", verbose = FALSE)
-chrom <- create.chromR(name="SARS-CoV-2 founder variants", vcf=my_vcf)
-chrom <- proc.chromR(chrom, verbose=TRUE)
-pdf('vcfR_plot.pdf')
-plot(chrom)
-dev.off()
-pdf('chromoqc_plot.pdf')
-chromoqc(chrom, xlim=c(1, 29903))
-dev.off()
-q()
-n
-####
-
-
 echo ""
 echo "All done."
 echo ""
