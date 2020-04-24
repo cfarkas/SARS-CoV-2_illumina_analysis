@@ -99,11 +99,12 @@ to check 1.10 version (using htslib v1.10)
 
 ### Obtaining SRA toolkit from ncbi (for downloading reads from SRA archive).
 ```
+### Installing SRA toolkit from ncbi
 wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/2.9.6/sratoolkit.2.9.6-ubuntu64.tar.gz
 gunzip sratoolkit.2.9.6-ubuntu64.tar.gz
 tar -xvf sratoolkit.2.9.6-ubuntu64.tar
-# with sudo privileges
-sudo cp sratoolkit.2.9.6-ubuntu64/bin/fastq-dump /usr/local/bin/
+cp sratoolkit.2.9.6-ubuntu64/bin/fastq-dump /usr/local/bin/
+cp sratoolkit.2.9.6-ubuntu64/bin/prefetch /usr/local/bin/
 ```
 
 ### Obtaining tabix (to bgzip and tabix vcf files).
