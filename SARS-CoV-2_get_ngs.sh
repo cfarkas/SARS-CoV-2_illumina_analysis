@@ -78,59 +78,61 @@ if [ $# -ne 4 ]; then
 fi
 dir1=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
-echo "Getting Illumina SRA sequencing data"
-while read line; do
-  fastq-dump -Z --gzip $line > $line.fq.gz
-done <${1}
-echo" Done"
-
+echo "Converting SRA files to fastq.gz"
+prefetch -O ./ --option-file ${1}
+echo "SRA files were downloaded in current directory"
+echo ""
+echo "Converting SRA files to fastq.gz"
+SRA= ls -1 *.sra
+for SRA in *.sra; do fastq-dump --gzip ${SRA}
+done
+echo ""
 echo "Trimming reads with fastp"
 SRA= ls -1 *.fq.gz
 for SRA in *.fq.gz; do fastp -w ${3} -i ${SRA} -o ${SRA}.fastp
 done
 echo "Done"
-
+echo ""
 echo "Mapping reads againts SARS-CoV-2 reference genome with minimap2"
 fastp= ls -1 *.fq.gz.fastp
 for fastp in *.fq.gz.fastp; do minimap2 -ax sr ${2} ${fastp} > ${fastp}.sam -t 20
 done
 echo "Done"
-
+echo ""
 echo "Sorting SAM files, using n threads"
 sam= ls -1 *.sam
 for sam in *.sam; do samtools sort ${sam} > ${sam}.sorted.bam -@ ${3}
 done
 echo "Done"
-
+echo ""
 echo "Cleaning intermediate files"
 rm *.fastp
 rm *.sam
 echo "Done"
-
+echo ""
 echo "Renaming files in bash"
 for filename in *.bam; do mv "./$filename" "./$(echo "$filename" | sed -e 's/.fq.gz//g')";  done
 for filename in *.bam; do mv "./$filename" "./$(echo "$filename" | sed -e 's/.fastp.sam//g')";  done
 echo "Done"
-
+echo ""
 echo "Indexing bam files"
 bam= ls -1 *.bam
 for bam in *.bam; do samtools index ${bam} -@ 20
 done
 echo "Done"
-
+echo ""
 echo "Calling and filtering variants by using bcftools"
-
+echo ""
 bam= ls -1 *.bam
 for bam in *.bam; do bcftools mpileup --min-ireads 3 -B -C 50 -d 250 --fasta-ref ${2} --threads ${3} -Ou ${bam}| bcftools call -mv -Ov -o ${bam}.vcf
 done
-
+echo ""
 bcf= ls -1 *.sorted.bam.vcf
 for bcf in *.sorted.bam.vcf; do bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1])/(DP4[2]+DP4[3]) > 2' ${bcf} > ${bcf}.filtered
 done
 echo "Done"
-
+echo ""
 echo "BGZIP and Tabix founder variants"
-
 founder= ls -1 *.sorted.bam.vcf.filtered
 for founder in *.sorted.bam.vcf.filtered; do bgzip ${founder}
 done
@@ -139,12 +141,12 @@ founder= ls -1 *.sorted.bam.vcf.filtered.gz
 for founder in *.sorted.bam.vcf.filtered.gz; do tabix -p vcf ${founder}
 done
 echo "Done"
-
+echo ""
 echo "Merging founder variants across samples"
 export PERL5LIB=${4}
 vcf-merge --remove-duplicates --trim-ALTs $(ls -1 *.sorted.bam.vcf.filtered.gz | perl -pe 's/\n/ /g') > founder.vcf
 echo "Done"
-
+echo ""
 echo "Summarize genotypes in founder variants" 
 vcffixup founder.vcf > founder.fixup.vcf
 echo "Done"
