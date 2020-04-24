@@ -78,7 +78,7 @@ if [ $# -ne 4 ]; then
 fi
 dir1=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
-echo "Downloading SRA files from given list of accessions"
+echo "Downloading SRA files from the given list of accessions"
 prefetch -O ./ --option-file ${1}
 echo "SRA files were downloaded in current directory"
 echo ""
