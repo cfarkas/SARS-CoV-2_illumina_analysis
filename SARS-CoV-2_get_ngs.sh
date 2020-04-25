@@ -88,14 +88,14 @@ for SRA in *.sra; do fastq-dump --gzip ${SRA}
 done
 echo ""
 echo "Trimming reads with fastp"
-SRA= ls -1 *.fq.gz
-for SRA in *.fq.gz; do fastp -w ${3} -i ${SRA} -o ${SRA}.fastp
+SRA= ls -1 *.fastq.gz
+for SRA in *.fastq.gz; do fastp -w ${3} -i ${SRA} -o ${SRA}.fastp
 done
 echo "Done"
 echo ""
 echo "Mapping reads againts SARS-CoV-2 reference genome with minimap2"
-fastp= ls -1 *.fq.gz.fastp
-for fastp in *.fq.gz.fastp; do minimap2 -ax sr ${2} ${fastp} > ${fastp}.sam -t 20
+fastp= ls -1 *.fastq.gz.fastp
+for fastp in *.fastq.gz.fastp; do minimap2 -ax sr ${2} ${fastp} > ${fastp}.sam -t 20
 done
 echo "Done"
 echo ""
@@ -111,7 +111,7 @@ rm *.sam
 echo "Done"
 echo ""
 echo "Renaming files in bash"
-for filename in *.bam; do mv "./$filename" "./$(echo "$filename" | sed -e 's/.fq.gz//g')";  done
+for filename in *.bam; do mv "./$filename" "./$(echo "$filename" | sed -e 's/.fastq.gz//g')";  done
 for filename in *.bam; do mv "./$filename" "./$(echo "$filename" | sed -e 's/.fastp.sam//g')";  done
 echo "Done"
 echo ""
@@ -136,7 +136,6 @@ echo "BGZIP and Tabix founder variants"
 founder= ls -1 *.sorted.bam.vcf.filtered
 for founder in *.sorted.bam.vcf.filtered; do bgzip ${founder}
 done
-
 founder= ls -1 *.sorted.bam.vcf.filtered.gz
 for founder in *.sorted.bam.vcf.filtered.gz; do tabix -p vcf ${founder}
 done
