@@ -275,6 +275,10 @@ cd ..
 ########################################################
 ########################################################
 
+echo "Indexing SARS-CoV-2 reference genome"
+bowtie2-build covid19-refseq.fasta covid19-refseq
+echo "Done"
+
 ###################################################
 # Obtaining BED files from CDC primers alignments #
 ###################################################
