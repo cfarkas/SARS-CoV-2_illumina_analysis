@@ -52,16 +52,14 @@ sudo cp ./bin/* /usr/local/bin/
 Complete instructions can be found in https://vcftools.github.io/downloads.html. Users with privileges can accomplish with sudo as follows: 
 
 ```
+### Installing vcftools
 git clone https://github.com/vcftools/vcftools.git
+cd vcftools/
 ./autogen.sh
+export PERL5LIB=/path/to/your/vcftools-directory/src/perl/ 
 ./configure
 make
-# with sudo privileges
-sudo make install
-```
-with conda installing:
-```
-conda install -c bioconda vcftools
+make install
 ```
 
 ### Installing vcflib
