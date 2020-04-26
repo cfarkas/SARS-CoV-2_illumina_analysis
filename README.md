@@ -134,7 +134,7 @@ install.packages("vcfR")
 
 # Quick Start:
 
-To reproduce all computational steps from the paper: https://www.biorxiv.org/content/10.1101/2020.04.09.034462v1 dowmload this repository, provide path to vcftools folder (/src/perl/) and execute the given bash script as follows:
+To reproduce all computational steps from the paper: https://www.biorxiv.org/content/10.1101/2020.04.09.034462v1 download this repository, provide path to PERL5LIB vcftools folder (located in/src/perl/ in vcftools folder) and execute the given bash script as follows:
 ```
 git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
