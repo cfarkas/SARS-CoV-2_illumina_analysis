@@ -129,13 +129,14 @@ Please refer to Torsten Seemann Repo: https://github.com/tseemann/snippy
 ```
 conda install -c conda-forge -c bioconda -c defaults snippy
 ```
-without sudo privileges:
+To install miniconda3 in linux:
 
 ```
-cd $HOME
-git clone https://github.com/tseemann/snippy.git
-$HOME/snippy/bin/snippy --help
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+chmod 755 Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
 ```
+
 ### Installing vcfR library. For documentation: https://cran.r-project.org/web/packages/vcfR/vignettes/intro_to_vcfR.html
 
 In R, type
