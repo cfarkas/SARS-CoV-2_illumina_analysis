@@ -19,52 +19,52 @@ echo ""
 
 echo "Downloading illumina SRA files from March 20 and 25, 2020"
 
-prefetch -O ./ --option-file SRR10903401
-prefetch -O ./ --option-file SRR10903402
-prefetch -O ./ --option-file SRR10971381
-prefetch -O ./ --option-file SRR11059940
-prefetch -O ./ --option-file SRR11059941
-prefetch -O ./ --option-file SRR11059942
-prefetch -O ./ --option-file SRR11059943
-prefetch -O ./ --option-file SRR11059944
-prefetch -O ./ --option-file SRR11059945
-prefetch -O ./ --option-file SRR11059946
-prefetch -O ./ --option-file SRR11059947
-prefetch -O ./ --option-file SRR11140744
-prefetch -O ./ --option-file SRR11140746
-prefetch -O ./ --option-file SRR11140748
-prefetch -O ./ --option-file SRR11140750
-prefetch -O ./ --option-file SRR11177792
-prefetch -O ./ --option-file SRR11241254
-prefetch -O ./ --option-file SRR11241255
-prefetch -O ./ --option-file SRR11247075
-prefetch -O ./ --option-file SRR11247076
-prefetch -O ./ --option-file SRR11247077
-prefetch -O ./ --option-file SRR11247078
-prefetch -O ./ --option-file SRR11278090
-prefetch -O ./ --option-file SRR11278091
-prefetch -O ./ --option-file SRR11278092
-prefetch -O ./ --option-file SRR11278164
-prefetch -O ./ --option-file SRR11278165
-prefetch -O ./ --option-file SRR11278166
-prefetch -O ./ --option-file SRR11278167
-prefetch -O ./ --option-file SRR11278168
-prefetch -O ./ --option-file SRR11314339
+prefetch -O ./ SRR10903401
+prefetch -O ./ SRR10903402
+prefetch -O ./ SRR10971381
+prefetch -O ./ SRR11059940
+prefetch -O ./ SRR11059941
+prefetch -O ./ SRR11059942
+prefetch -O ./ SRR11059943
+prefetch -O ./ SRR11059944
+prefetch -O ./ SRR11059945
+prefetch -O ./ SRR11059946
+prefetch -O ./ SRR11059947
+prefetch -O ./ SRR11140744
+prefetch -O ./ SRR11140746
+prefetch -O ./ SRR11140748
+prefetch -O ./ SRR11140750
+prefetch -O ./ SRR11177792
+prefetch -O ./ SRR11241254
+prefetch -O ./ SRR11241255
+prefetch -O ./ SRR11247075
+prefetch -O ./ SRR11247076
+prefetch -O ./ SRR11247077
+prefetch -O ./ SRR11247078
+prefetch -O ./ SRR11278090
+prefetch -O ./ SRR11278091
+prefetch -O ./ SRR11278092
+prefetch -O ./ SRR11278164
+prefetch -O ./ SRR11278165
+prefetch -O ./ SRR11278166
+prefetch -O ./ SRR11278167
+prefetch -O ./ SRR11278168
+prefetch -O ./ SRR11314339
 
 ### March 25, 2020 Paired end and Single End
 
-prefetch -O ./ --option-file SRR11397714
-prefetch -O ./ --option-file SRR11397715
-prefetch -O ./ --option-file SRR11397716
-prefetch -O ./ --option-file SRR11397717
-prefetch -O ./ --option-file SRR11397718
-prefetch -O ./ --option-file SRR11397719
-prefetch -O ./ --option-file SRR11397720
-prefetch -O ./ --option-file SRR11397721
-prefetch -O ./ --option-file SRR11397728
-prefetch -O ./ --option-file SRR11397729
-prefetch -O ./ --option-file SRR11397730
-prefetch -O ./ --option-file SRR11393704
+prefetch -O ./ SRR11397714
+prefetch -O ./ SRR11397715
+prefetch -O ./ SRR11397716
+prefetch -O ./ SRR11397717
+prefetch -O ./ SRR11397718
+prefetch -O ./ SRR11397719
+prefetch -O ./ SRR11397720
+prefetch -O ./ SRR11397721
+prefetch -O ./ SRR11397728
+prefetch -O ./ SRR11397729
+prefetch -O ./ SRR11397730
+prefetch -O ./ SRR11393704
 
 echo "Done"
 echo ""
@@ -83,7 +83,6 @@ echo ""
 a= ls -1 *.fastq.gz
 for a in *.fastq.gz; do fastp -w 16 -i ${a} -o ${a}.fastp
 done
-
 
 ###########################################################################################
 # Aligning illumina datasets againts reference with minimap, using 20 threads (-t option) #
@@ -282,7 +281,6 @@ cd ..
 
 echo "Obtaining BED files from CDC primers alignments."
 echo ""
-
 bowtie2 -p 20 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq -f CDC_primers.fasta > CDC_primers.sam
 samtools view -bS CDC_primers.sam > CDC_primers.bam
 samtools sort -o CDC_primers.sorted.bam CDC_primers.bam
