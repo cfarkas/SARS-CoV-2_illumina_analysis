@@ -144,7 +144,8 @@ git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
 ./SARS-CoV-2_commands.sh 
 ```
-These lines will execute all the analyses. 
+These lines will execute all the analyses using 20 threads. Users can modify this number in the script by using nano u other text processor. 
+
 
 # Steps for user-provided datasets from SARS-CoV-2:
 
