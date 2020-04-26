@@ -59,6 +59,10 @@ make
 # with sudo privileges
 sudo make install
 ```
+with conda installing:
+```
+conda install -c bioconda vcftools
+```
 
 ### Installing vcflib
 ```
