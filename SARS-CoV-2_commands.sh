@@ -65,9 +65,9 @@ fastq-dump -Z SRR11397729 > SRR11397729.fq
 fastq-dump -Z SRR11397730 > SRR11397730.fq
 fastq-dump -Z SRR11393704 > SRR11393704.fq
 
-####################################################
-# Trimming downloaded Illumina datasets with fastp #
-####################################################
+##################################################################################
+# Trimming downloaded Illumina datasets with fastp, using 16 threads (-w option) #
+##################################################################################
 
 echo "Trimming downloaded Illumina datasets with fastp."
 echo ""
@@ -77,9 +77,9 @@ for a in *.fq; do fastp -w 16 -i ${a} -o ${a}.fastp
 done
 
 
-###############################################################################
-# Aligning illumina datasets againts reference with minimap, using 20 threads #
-###############################################################################
+###########################################################################################
+# Aligning illumina datasets againts reference with minimap, using 20 threads (-t option) #
+###########################################################################################
 
 echo "Aligning illumina datasets againts reference with minimap, using 20 threads."
 echo ""
@@ -88,9 +88,9 @@ b= ls -1 *.fq.fastp
 for b in *.fq.fastp; do minimap2 -ax sr covid19-refseq.fasta ${b} > ${b}.sam -t 20
 done
 
-#######################################
-# Sorting SAM files, using 20 threads #
-#######################################
+###################################################
+# Sorting SAM files, using 20 threads (-@ option) #
+###################################################
 
 echo "Sorting SAM files, using 20 threads."
 echo ""
@@ -211,11 +211,11 @@ bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11393704.fq.fastp.sam.sorted.bam.rm
 
 cd ..
 
-#######################
-#######################
-### Snippy Analysis ###
-#######################
-#######################
+#########################################################
+#########################################################
+### Snippy Analysis, using 20 threads (--cpus option) ###
+#########################################################
+#########################################################
 
 echo "Use Snippy to call variants (by using freebayes) and classify these variants using SnpEff."
 echo ""
