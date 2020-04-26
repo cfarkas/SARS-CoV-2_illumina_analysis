@@ -142,10 +142,11 @@ install.packages("vcfR")
 
 # Quick Start:
 
-To reproduce all computational steps from the paper: https://www.biorxiv.org/content/10.1101/2020.04.09.034462v1 dowmload this repository and execute the given bash script as follows:
+To reproduce all computational steps from the paper: https://www.biorxiv.org/content/10.1101/2020.04.09.034462v1 dowmload this repository, provide path to vcftools folder (/src/perl/) and execute the given bash script as follows:
 ```
 git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
+export PERL5LIB=/path/to/your/vcftools-directory/src/perl/   
 ./SARS-CoV-2_commands.sh 
 ```
 These lines will execute all the analyses using 20 threads. Users can modify this number in the script by using nano or another text processor. 
@@ -165,7 +166,7 @@ as follows:
 git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
 samtools faidx covid19-refseq.fasta
-./SARS-CoV-2_get_ngs.sh SRA_list Reference Threads /path/to/perl5lib 
+./SARS-CoV-2_get_ngs.sh SRA_list Reference Threads /path/to/your/vcftools-directory/src/perl/
 ```
 For more information about this script, do
 
