@@ -11,6 +11,18 @@ Computational analysis to discover founder variants in illumina NGS data from SA
 
 # Preeliminars: 
 
+### Installing bowtie2-aligner (for details, see: http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
+```
+wget https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.3.3.1/bowtie2-2.3.3.1-linux-x86_64.zip/download
+unzip download
+rm download
+cp ./bowtie2-2.3.3.1-linux-x86_64/bowtie2* /usr/local/bin/
+```
+with sudo privileges
+```
+sudo apt install bowtie2
+```
+
 ### Installing minimap2 aligner (for install details, please see: https://github.com/lh3/minimap2)
 ```
 ### Installing minimap2
