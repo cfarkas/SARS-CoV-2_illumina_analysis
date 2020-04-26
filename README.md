@@ -7,15 +7,9 @@ Computational analysis to discover founder variants in illumina NGS data from SA
 
 3) We also provide a way to evalute the performance of primer sets currently used for viral testing (see CDC_primers.fasta file) (https://www.cdc.gov/coronavirus/2019-ncov/lab/rt-pcr-panel-primer-probes.html). 
 
-4) Number of threads were setted to 20 in commands, but it can be increased/decreased. A machine with at least 50 GB ram memory is needed for the genbank sequence alignment but number of cores (n=5) can be decreased to n=1. 
+4) Number of threads were setted to 20 in commands, but it can be increased/decreased. 
 
 # Preeliminars: 
-
-### Obtaining Bowtie2 aligner (for install details, please see: http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
-```
-sudo apt-get update
-sudo apt-get install bowtie2
-```
 
 ### Installing minimap2 aligner (for install details, please see: https://github.com/lh3/minimap2)
 ```
