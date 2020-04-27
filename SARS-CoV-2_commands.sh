@@ -228,6 +228,8 @@ echo "Use Snippy to call variants (by using freebayes) and classify these varian
 echo ""
 
 mkdir Snippy_results
+cp *.fastq.gz ./Snippy_results/
+cp SARS-CoV-2.gb ./Snippy_results/
 cd Snippy_results
 
 # China
