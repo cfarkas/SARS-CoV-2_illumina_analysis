@@ -341,9 +341,9 @@ bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP
 
 ### Intersecting primers
 
-bedtools intersect -a CDC_primers.bed -b merge.vcf > CDC_primers.intersection
-bedtools intersect -a HK_Pasteur_Korea.bed -b merge.vcf > HK_Pasteur_Korea.intersection
-bedtools intersect -a primer-blast-50-170-bp.bed -b merge.vcf > primer-blast-50-170-bp.intersection
+bedtools intersect -a CDC_primers.bed -b merge.filtered.vcf > CDC_primers.intersection
+bedtools intersect -a HK_Pasteur_Korea.bed -b merge.filtered.vcf > HK_Pasteur_Korea.intersection
+bedtools intersect -a primer-blast-50-170-bp.bed -b merge.filtered.vcf > primer-blast-50-170-bp.intersection
 
 
 ##############################################################################################################
