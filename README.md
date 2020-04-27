@@ -178,6 +178,7 @@ For more information about this script, do
 ```
 ./SARS-CoV-2_get_ngs.sh -h 
 ```
+We provided a file in this repository called SARS-CoV-2_curated_list_22_04_2020.tabular with updated SARS-CoV-2 next generation sequencing datasets up to April 22, 2020.
 
 To inspect founder variants and plot it against SARS-CoV-2 reference genome, do the following:
 ```
