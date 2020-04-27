@@ -135,8 +135,8 @@ done
 echo "Indexing BAM files."
 echo ""
 
-f= ls -1 *.sorted.bam
-for f in *.sorted.bam; do samtools index ${f} -@ 20
+f= ls -1 *.sorted.bam.rmdup
+for f in *.sorted.bam.rmdup; do samtools index ${f}
 done
 
 ######################################
