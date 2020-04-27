@@ -374,6 +374,45 @@ samtools sort -o genbank_sequences_USA_alignment.sorted.bam genbank_sequences_US
 bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou genbank_sequences_USA_alignment.sorted.bam| bcftools call -mv -Ov -o genbank_sequences_USA_alignment.sorted.bam.vcf
 bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_USA_alignment.sorted.bam.vcf > genbank_sequences_USA_alignment.sorted.bam.DP4
 
+################################################################
+# Alignment of Genbank Sequences, April 22, 2020: Asia samples # 
+################################################################
+
+echo "Alignment of Genbank Sequences, April 22, 2020: Asia samples"
+echo ""
+gunzip genbank_sequences_Asia_April_22_2020.fasta.gz
+minimap2 -ax asm5 covid19-refseq.fasta genbank_sequences_Asia_April_22_2020.fasta > genbank_sequences_Asia_22_2020_alignment.sam
+samtools view -bS genbank_sequences_Asia_22_2020_alignment.sam > genbank_sequences_Asia_22_2020_alignment.bam
+samtools sort -o genbank_sequences_Asia_22_2020_alignment.sorted.bam genbank_sequences_Asia_22_2020_alignment.bam
+bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou genbank_sequences_Asia_22_2020_alignment.sorted.bam| bcftools call -mv -Ov -o genbank_sequences_Asia_22_2020_alignment.sorted.bam.vcf
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_Asia_22_2020_alignment.sorted.bam.vcf > genbank_sequences_Asia_22_2020_alignment.sorted.bam.DP4
+
+#########################################################################
+# Alignment of Genbank Sequences, April 22, 2020: North America samples # 
+#########################################################################
+
+echo "Alignment of Genbank Sequences, April 22, 2020: North America samples"
+echo ""
+gunzip genbank_sequences_North_America_April_22_2020.fasta.gz
+minimap2 -ax asm5 covid19-refseq.fasta genbank_sequences_North_America_April_22_2020.fasta > genbank_sequences_North_America_22_2020_alignment.sam
+samtools view -bS genbank_sequences_North_America_22_2020_alignment.sam > genbank_sequences_North_America_22_2020_alignment.bam
+samtools sort -o genbank_sequences_North_America_22_2020_alignment.sorted.bam genbank_sequences_North_America_22_2020_alignment.bam
+bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou genbank_sequences_North_America_22_2020_alignment.sorted.bam| bcftools call -mv -Ov -o genbank_sequences_North_America_22_2020_alignment.sorted.bam.vcf
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_North_America_22_2020_alignment.sorted.bam.vcf > genbank_sequences_North_America_22_2020_alignment.sorted.bam.DP4
+
+##################################################################
+# Alignment of Genbank Sequences, April 22, 2020: Europe samples # 
+##################################################################
+
+echo "Alignment of Genbank Sequences, April 22, 2020: Europe samples"
+echo ""
+gunzip genbank_sequences_Europe_April_22_2020.fasta.gz
+minimap2 -ax asm5 covid19-refseq.fasta genbank_sequences_Europe_April_22_2020.fasta > genbank_sequences_Europe_22_2020_alignment.sam
+samtools view -bS genbank_sequences_Europe_22_2020_alignment.sam > genbank_sequences_Europe_22_2020_alignment.bam
+samtools sort -o genbank_sequences_Europe_22_2020_alignment.sorted.bam genbank_sequences_Europe_22_2020_alignment.bam
+bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou genbank_sequences_Europe_22_2020_alignment.sorted.bam| bcftools call -mv -Ov -o genbank_sequences_Europe_22_2020_alignment.sorted.bam.vcf
+bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_Europe_22_2020_alignment.sorted.bam.vcf > genbank_sequences_Europe_22_2020_alignment.sorted.bam.DP4
+
 
 ###############################################################
 ### Final Primer Intersections: Adding USA genbank datasets ###
@@ -382,13 +421,23 @@ bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_USA_alignment.sorted
 echo "Final Primer Intersections: Adding USA genbank datasets"
 echo ""
 
-cp genbank_sequences_USA_alignment.sorted.bam.vcf ./genbank_USA.vcf
-bgzip genbank_USA.vcf
-tabix -p vcf genbank_USA.vcf.gz
+cp genbank_sequences_USA_alignment.sorted.bam.vcf ./genbank_USA_March_25_2020.vcf
+cp genbank_sequences_Asia_22_2020_alignment.sorted.bam.vcf ./genbank_Asia_April_22_2020.vcf
+cp genbank_sequences_Europe_22_2020_alignment.sorted.bam.vcf ./genbank_Europe_April_22_2020.vcf
+cp genbank_sequences_North_America_22_2020_alignment.sorted.bam.vcf ./genbank_North_America_April_22_2020.vcf
+
+bgzip genbank_USA_March_25_2020.vcf
+tabix -p vcf genbank_USA_March_25_2020.vcf.gz
+bgzip genbank_Asia_April_22_2020.vcf
+tabix -p vcf genbank_Asia_April_22_2020.vcf.gz
+bgzip genbank_Europe_April_22_2020.vcf
+tabix -p vcf genbank_Europe_April_22_2020.vcf.gz
+bgzip genbank_North_America_April_22_2020.vcf
+tabix -p vcf genbank_North_America_April_22_2020.vcf.gz
 bgzip merge.vcf
 tabix -p vcf merge.vcf.gz
 
-vcf-merge merge.vcf.gz genbank_USA.vcf.gz > final_merge.vcf
+vcf-merge merge.vcf.gz genbank_USA_March_25_2020.vcf.gz genbank_Asia_April_22_2020.vcf.gz genbank_Europe_April_22_2020.vcf.gz genbank_North_America_April_22_2020.vcf.gz > final_merge.vcf
 
 bedtools intersect -a CDC_primers.bed -b final_merge.vcf > CDC_primers.intersection.final
 bedtools intersect -a HK_Pasteur_Korea.bed -b final_merge.vcf > HK_Pasteur_Korea.intersection.final
