@@ -154,7 +154,30 @@ cd SARS-CoV-2_illumina_analysis
 export PERL5LIB=/path/to/your/vcftools-directory/src/perl/   
 ./SARS-CoV-2_commands.sh 
 ```
-These lines will execute all the analyses to obtain founder variants, using 20 threads. Users can modify this number in the script by using nano or another text processor. To use Sniipy in order to compare these variants, do the following (i.e. Using 20 CPUs):
+These lines will execute all the analyses to obtain founder variants, using 20 threads. Users can modify this number in the script by using nano or another text processor. 
+The expected output from these commands is: 
+
+- Founder variants in illumina samples: founder.fixup.vcf.filtered.vcf
+- Founder variants in North America: genbank_sequences_North_America_22_2020_alignment.sorted.bam.vcf
+- Founder variants in Europe: genbank_sequences_Europe_22_2020_alignment.sorted.bam.vcf
+- Founder variants in Asia: genbank_sequences_Asia_22_2020_alignment.sorted.bam.vcf 
+
+To inspect founder variants and plot it against SARS-CoV-2 reference genome, do the following (Using the illumina output, founder.fixup.vcf.filtered.vcf, as example):
+
+```
+R 
+library(vcfR)
+my_vcf <- read.vcfR("founder.fixup.vcf.filtered.vcf", verbose = FALSE)
+chrom <- create.chromR(name="SARS-CoV-2 founder variants", vcf=my_vcf)
+chrom <- proc.chromR(chrom, verbose=TRUE)
+pdf('vcfR_plot.pdf')
+plot(chrom)
+dev.off()                                                                                                                               pdf('chromoqc_plot.pdf')
+chromoqc(chrom, xlim=c(1, 29903))
+dev.off()
+```
+
+To use Snippy and compared the obtained variants, do the following (i.e. Using 20 CPUs):
 
 ```
 # China
@@ -195,8 +218,7 @@ snippy --cpus 20 --outdir ./SRR11397729 --ref SARS-CoV-2.gb --se SRR11397729.fas
 snippy --cpus 20 --outdir ./SRR11397730 --ref SARS-CoV-2.gb --se SRR11397730.fastq.gz
 ```
 
-
-# Steps for user-provided datasets from SARS-CoV-2:
+# Steps for user-provided datasets from SARS-CoV-2
 
 In order to obtain all founder mutations in user-provided SARS-CoV-2 NGS datasets, users need to execute another bash script: SARS-CoV-2_get_ngs.sh, providing: 
 
@@ -217,20 +239,6 @@ For more information about this script, do
 ```
 ./SARS-CoV-2_get_ngs.sh -h 
 ```
-We provided a file in this repository called SARS-CoV-2_curated_list_22_04_2020.tabular with updated SARS-CoV-2 next generation sequencing datasets up to April 22, 2020.
-
-To inspect founder variants and plot it against SARS-CoV-2 reference genome, do the following:
-```
-R 
-library(vcfR)
-my_vcf <- read.vcfR("founder.fixup.vcf", verbose = FALSE)
-chrom <- create.chromR(name="SARS-CoV-2 founder variants", vcf=my_vcf)
-chrom <- proc.chromR(chrom, verbose=TRUE)
-pdf('vcfR_plot.pdf')
-plot(chrom)
-dev.off()                                                                                                                               pdf('chromoqc_plot.pdf')
-chromoqc(chrom, xlim=c(1, 29903))
-dev.off()
-```
+To test, we provided a file in this repository called SARS-CoV-2_curated_list_22_04_2020.tabular with updated SARS-CoV-2 next generation sequencing datasets up to April 22, 2020.
 
 Contact: cfarkas@udec.cl, carlosfarkas@gmail.com
