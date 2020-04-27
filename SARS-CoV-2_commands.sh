@@ -226,7 +226,6 @@ cd ..
 
 echo "Use Snippy to call variants (by using freebayes) and classify these variants using SnpEff."
 echo ""
-
 mkdir Snippy_results
 cp *.fastq.gz ./Snippy_results/
 cp SARS-CoV-2.gb ./Snippy_results/
