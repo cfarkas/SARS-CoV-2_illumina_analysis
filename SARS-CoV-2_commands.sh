@@ -229,45 +229,46 @@ echo ""
 
 mkdir Snippy_results
 cp *.fastq.gz ./Snippy_results/
-cp SARS-CoV-2.gb ./Snippy_results/
+mv "./SARS-CoV-2.gb" "./$(echo "SARS-CoV-2.gb" | sed -e 's/.gb/.gbk/g')"
+cp SARS-CoV-2.gbk ./Snippy_results/
 cd Snippy_results
 
 # China
 
-snippy --cpus 20 --outdir ./SRR11059940 --ref SARS-CoV-2.gb --se SRR11059940.fastq.gz
-snippy --cpus 20 --outdir ./SRR11059944 --ref SARS-CoV-2.gb --se SRR11059944.fastq.gz
-snippy --cpus 20 --outdir ./SRR11059945 --ref SARS-CoV-2.gb --se SRR11059945.fastq.gz
-snippy --cpus 20 --outdir ./SRR11059946 --ref SARS-CoV-2.gb --se SRR11059946.fastq.gz
-snippy --cpus 20 --outdir ./SRR11059947 --ref SARS-CoV-2.gb --se SRR11059947.fastq.gz
+snippy --cpus 20 --outdir ./SRR11059940 --ref SARS-CoV-2.gbk --se SRR11059940.fastq.gz
+snippy --cpus 20 --outdir ./SRR11059944 --ref SARS-CoV-2.gbk --se SRR11059944.fastq.gz
+snippy --cpus 20 --outdir ./SRR11059945 --ref SARS-CoV-2.gbk --se SRR11059945.fastq.gz
+snippy --cpus 20 --outdir ./SRR11059946 --ref SARS-CoV-2.gbk --se SRR11059946.fastq.gz
+snippy --cpus 20 --outdir ./SRR11059947 --ref SARS-CoV-2.gbk --se SRR11059947.fastq.gz
 
 # USA
-snippy --cpus 20 --outdir ./SRR11241254 --ref SARS-CoV-2.gb --se SRR11241254.fastq.gz
-snippy --cpus 20 --outdir ./SRR11241255 --ref SARS-CoV-2.gb --se SRR11241255.fastq.gz
-snippy --cpus 20 --outdir ./SRR11247075 --ref SARS-CoV-2.gb --se SRR11247075.fastq.gz
-snippy --cpus 20 --outdir ./SRR11247076 --ref SARS-CoV-2.gb --se SRR11247076.fastq.gz
-snippy --cpus 20 --outdir ./SRR11247077 --ref SARS-CoV-2.gb --se SRR11247077.fastq.gz
-snippy --cpus 20 --outdir ./SRR11247078 --ref SARS-CoV-2.gb --se SRR11247078.fastq.gz
-snippy --cpus 20 --outdir ./SRR11278090 --ref SARS-CoV-2.gb --se SRR11278090.fastq.gz
-snippy --cpus 20 --outdir ./SRR11278091 --ref SARS-CoV-2.gb --se SRR11278091.fastq.gz
-snippy --cpus 20 --outdir ./SRR11278092 --ref SARS-CoV-2.gb --se SRR11278092.fastq.gz
-snippy --cpus 20 --outdir ./SRR11278164 --ref SARS-CoV-2.gb --se SRR11278164.fastq.gz
-snippy --cpus 20 --outdir ./SRR11278165 --ref SARS-CoV-2.gb --se SRR11278165.fastq.gz
-snippy --cpus 20 --outdir ./SRR11278166 --ref SARS-CoV-2.gb --se SRR11278166.fastq.gz
-snippy --cpus 20 --outdir ./SRR11278167 --ref SARS-CoV-2.gb --se SRR11278167.fastq.gz
-snippy --cpus 20 --outdir ./SRR11278168 --ref SARS-CoV-2.gb --se SRR11278168.fastq.gz
+snippy --cpus 20 --outdir ./SRR11241254 --ref SARS-CoV-2.gbk --se SRR11241254.fastq.gz
+snippy --cpus 20 --outdir ./SRR11241255 --ref SARS-CoV-2.gbk --se SRR11241255.fastq.gz
+snippy --cpus 20 --outdir ./SRR11247075 --ref SARS-CoV-2.gbk --se SRR11247075.fastq.gz
+snippy --cpus 20 --outdir ./SRR11247076 --ref SARS-CoV-2.gbk --se SRR11247076.fastq.gz
+snippy --cpus 20 --outdir ./SRR11247077 --ref SARS-CoV-2.gbk --se SRR11247077.fastq.gz
+snippy --cpus 20 --outdir ./SRR11247078 --ref SARS-CoV-2.gbk --se SRR11247078.fastq.gz
+snippy --cpus 20 --outdir ./SRR11278090 --ref SARS-CoV-2.gbk --se SRR11278090.fastq.gz
+snippy --cpus 20 --outdir ./SRR11278091 --ref SARS-CoV-2.gbk --se SRR11278091.fastq.gz
+snippy --cpus 20 --outdir ./SRR11278092 --ref SARS-CoV-2.gbk --se SRR11278092.fastq.gz
+snippy --cpus 20 --outdir ./SRR11278164 --ref SARS-CoV-2.gbk --se SRR11278164.fastq.gz
+snippy --cpus 20 --outdir ./SRR11278165 --ref SARS-CoV-2.gbk --se SRR11278165.fastq.gz
+snippy --cpus 20 --outdir ./SRR11278166 --ref SARS-CoV-2.gbk --se SRR11278166.fastq.gz
+snippy --cpus 20 --outdir ./SRR11278167 --ref SARS-CoV-2.gbk --se SRR11278167.fastq.gz
+snippy --cpus 20 --outdir ./SRR11278168 --ref SARS-CoV-2.gbk --se SRR11278168.fastq.gz
 
 # Australia
-snippy --cpus 20 --outdir ./SRR11397714 --ref SARS-CoV-2.gb --se SRR11397714.fastq.gz
-snippy --cpus 20 --outdir ./SRR11397715 --ref SARS-CoV-2.gb --se SRR11397715.fastq.gz
-snippy --cpus 20 --outdir ./SRR11397716 --ref SARS-CoV-2.gb --se SRR11397716.fastq.gz
-snippy --cpus 20 --outdir ./SRR11397717 --ref SARS-CoV-2.gb --se SRR11397717.fastq.gz
-snippy --cpus 20 --outdir ./SRR11397718 --ref SARS-CoV-2.gb --se SRR11397718.fastq.gz
-snippy --cpus 20 --outdir ./SRR11397719 --ref SARS-CoV-2.gb --se SRR11397719.fastq.gz
-snippy --cpus 20 --outdir ./SRR11397720 --ref SARS-CoV-2.gb --se SRR11397720.fastq.gz
-snippy --cpus 20 --outdir ./SRR11397721 --ref SARS-CoV-2.gb --se SRR11397721.fastq.gz
-snippy --cpus 20 --outdir ./SRR11397728 --ref SARS-CoV-2.gb --se SRR11397728.fastq.gz
-snippy --cpus 20 --outdir ./SRR11397729 --ref SARS-CoV-2.gb --se SRR11397729.fastq.gz
-snippy --cpus 20 --outdir ./SRR11397730 --ref SARS-CoV-2.gb --se SRR11397730.fastq.gz
+snippy --cpus 20 --outdir ./SRR11397714 --ref SARS-CoV-2.gbk --se SRR11397714.fastq.gz
+snippy --cpus 20 --outdir ./SRR11397715 --ref SARS-CoV-2.gbk --se SRR11397715.fastq.gz
+snippy --cpus 20 --outdir ./SRR11397716 --ref SARS-CoV-2.gbk --se SRR11397716.fastq.gz
+snippy --cpus 20 --outdir ./SRR11397717 --ref SARS-CoV-2.gbk --se SRR11397717.fastq.gz
+snippy --cpus 20 --outdir ./SRR11397718 --ref SARS-CoV-2.gbk --se SRR11397718.fastq.gz
+snippy --cpus 20 --outdir ./SRR11397719 --ref SARS-CoV-2.gbk --se SRR11397719.fastq.gz
+snippy --cpus 20 --outdir ./SRR11397720 --ref SARS-CoV-2.gbk --se SRR11397720.fastq.gz
+snippy --cpus 20 --outdir ./SRR11397721 --ref SARS-CoV-2.gbk --se SRR11397721.fastq.gz
+snippy --cpus 20 --outdir ./SRR11397728 --ref SARS-CoV-2.gbk --se SRR11397728.fastq.gz
+snippy --cpus 20 --outdir ./SRR11397729 --ref SARS-CoV-2.gbk --se SRR11397729.fastq.gz
+snippy --cpus 20 --outdir ./SRR11397730 --ref SARS-CoV-2.gbk --se SRR11397730.fastq.gz
 
 cd ..
 
