@@ -333,6 +333,12 @@ done
 
 vcf-merge $(ls -1 *.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered.gz | perl -pe 's/\n/ /g') > merge.vcf
 
+##############################
+# Filtering merged VCF files #
+##############################
+
+bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1]+DP4[2]+DP4[3]) > 8' merge.vcf > merge.filtered.vcf
+
 ### Intersecting primers
 
 bedtools intersect -a CDC_primers.bed -b merge.vcf > CDC_primers.intersection
@@ -434,10 +440,10 @@ bgzip genbank_Europe_April_22_2020.vcf
 tabix -p vcf genbank_Europe_April_22_2020.vcf.gz
 bgzip genbank_North_America_April_22_2020.vcf
 tabix -p vcf genbank_North_America_April_22_2020.vcf.gz
-bgzip merge.vcf
-tabix -p vcf merge.vcf.gz
+bgzip merge.filtered.vcf
+tabix -p vcf merge.filtered.vcf.gz
 
-vcf-merge merge.vcf.gz genbank_USA_March_25_2020.vcf.gz genbank_Asia_April_22_2020.vcf.gz genbank_Europe_April_22_2020.vcf.gz genbank_North_America_April_22_2020.vcf.gz > final_merge.vcf
+vcf-merge merge.filtered.vcf.gz genbank_USA_March_25_2020.vcf.gz genbank_Asia_April_22_2020.vcf.gz genbank_Europe_April_22_2020.vcf.gz genbank_North_America_April_22_2020.vcf.gz > final_merge.vcf
 
 bedtools intersect -a CDC_primers.bed -b final_merge.vcf > CDC_primers.intersection.final
 bedtools intersect -a HK_Pasteur_Korea.bed -b final_merge.vcf > HK_Pasteur_Korea.intersection.final
