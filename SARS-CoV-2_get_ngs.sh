@@ -148,6 +148,8 @@ echo "Done"
 echo ""
 echo "Summarize genotypes in founder variants" 
 vcffixup founder.vcf > founder.fixup.vcf
+echo "Filtering variants with DP4 field (Min 8 reads as sum)"
+bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1]+DP4[2]+DP4[3]) > 8' founder.fixup.vcf > founder.fixup.vcf.filtered
 echo "Done"
 echo ""
 echo "All done."
