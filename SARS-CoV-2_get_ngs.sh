@@ -162,7 +162,7 @@ echo "Calling Founder Variants"
 bam= ls -1 *.bam
 for bam in *.bam; do 
 ./strelka-2.9.2.centos6_x86_64/bin/configureStrelkaGermlineWorkflow.py \
-    --bam SRR10971381.sorted.bam \
+    --bam SRR10971381.bam \
     --bam ${bam} \
     --referenceFasta ${2} \
     --runDir ${bam}.founder
