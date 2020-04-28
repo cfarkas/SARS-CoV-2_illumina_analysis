@@ -352,7 +352,7 @@ bedtools intersect -a HK_Pasteur_Korea.bed -b final_merge.vcf > HK_Pasteur_Korea
 bedtools intersect -a primer-blast-50-170-bp.bed -b final_merge.vcf > primer-blast-50-170-bp.intersection.final
 
 echo ""
-echo "All done."
+echo "All Done"
 echo ""
 
 ###############################################################
