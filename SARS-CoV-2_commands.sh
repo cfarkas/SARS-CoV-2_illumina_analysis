@@ -350,11 +350,7 @@ vcf-merge genbank_USA_March_25_2020.vcf.gz genbank_Asia_April_22_2020.vcf.gz gen
 bedtools intersect -a CDC_primers.bed -b final_merge.vcf > CDC_primers.intersection.final
 bedtools intersect -a HK_Pasteur_Korea.bed -b final_merge.vcf > HK_Pasteur_Korea.intersection.final
 bedtools intersect -a primer-blast-50-170-bp.bed -b final_merge.vcf > primer-blast-50-170-bp.intersection.final
-
-echo ""
 echo "All Done"
-
-###############################################################
 #
 } | tee logfile
 #
