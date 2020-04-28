@@ -185,7 +185,7 @@ echo "Calling Somatic Variants"
 bam= ls -1 *.bam
 for bam in *.bam; do
 ./strelka-2.9.2.centos6_x86_64/bin/configureStrelkaSomaticWorkflow.py \
-    --normalBam SRR10971381.sorted.bam \
+    --normalBam SRR10971381.bam \
     --tumorBam ${bam} \
     --referenceFasta ${2} \
     --runDir ${bam}.somatic
