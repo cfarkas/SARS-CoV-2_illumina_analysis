@@ -64,7 +64,6 @@ prefetch -O ./ SRR11397721
 prefetch -O ./ SRR11397728
 prefetch -O ./ SRR11397729
 prefetch -O ./ SRR11397730
-prefetch -O ./ SRR11393704
 
 echo "Done"
 echo ""
@@ -168,42 +167,7 @@ mv strelka_germline_variants.filtered.vcf ./${bam}.founder.vcf
 rm strelka_germline_variants.vcf
 rm -r -f ${bam}.founder
 done
-
-echo "Calling Somatic Variants"          
-bam= ls -1 *.bam
-for bam in *.bam; do
-./strelka-2.9.2.centos6_x86_64/bin/configureStrelkaSomaticWorkflow.py \
-    --normalBam SRR10971381.bam \
-    --tumorBam ${bam} \
-    --referenceFasta covid19-refseq.fasta \
-    --runDir ${bam}.somatic
-# execution on a single local machine with n parallel jobs
-${bam}.somatic/runWorkflow.py -m local -j 20
-# snvs
-cp ./${bam}.somatic/results/variants/somatic.snvs.vcf.gz ./strelka_somatic_variants.vcf.gz
-cp ./${bam}.somatic/results/variants/somatic.indels.vcf.gz ./strelka_somatic_indels.vcf.gz
-bgzip -d strelka_somatic_variants.vcf.gz
-grep "#" strelka_somatic_variants.vcf > strelka_somatic_variants_header.vcf
-grep "PASS" strelka_somatic_variants.vcf > strelka_somatic_variants_PASS.vcf
-grep -v "NoPassedVariantGTs" strelka_somatic_variants_PASS.vcf > strelka_somatic_variants_PASS2.vcf
-rm strelka_somatic_variants_PASS.vcf
-cat strelka_somatic_variants_header.vcf strelka_somatic_variants_PASS2.vcf > strelka_somatic_variants.filtered.vcf
-rm strelka_somatic_variants_header.vcf strelka_somatic_variants_PASS2.vcf
-mv strelka_somatic_variants.filtered.vcf ./${bam}.somatic.snvs.vcf
-rm strelka_somatic_variants.vcf
-# indels
-bgzip -d strelka_somatic_indels.vcf.gz
-grep "#" strelka_somatic_indels.vcf > strelka_somatic_indels_header.vcf
-grep "PASS" strelka_somatic_indels.vcf > strelka_somatic_indels_PASS.vcf
-grep -v "NoPassedVariantGTs" strelka_somatic_indels_PASS.vcf > strelka_somatic_indels_PASS2.vcf
-rm strelka_somatic_indels_PASS.vcf
-cat strelka_somatic_indels_header.vcf strelka_somatic_indels_PASS2.vcf > strelka_somatic_indels.filtered.vcf
-rm strelka_somatic_indels_header.vcf strelka_somatic_indels_PASS2.vcf
-mv strelka_somatic_indels.filtered.vcf ./${bam}.somatic.indels.vcf
-rm strelka_somatic_indels.vcf
-rm -r -f ${bam}.somatic
-done
-rm SRR10971381.bam.founder.vcf SRR10971381.bam.somatic.snvs.vcf SRR10971381.bam.somatic.indels.vcf
+rm SRR10971381.bam.founder.vcf
 #########################
 # Cleaning Up SAM files #
 #########################
