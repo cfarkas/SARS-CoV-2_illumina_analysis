@@ -25,7 +25,7 @@ fi
 
 if [ "$1" == "-help" ]; then
   echo ""
-  echo "Usage: ./`basename $0` [SRA_list] [Reference] [Threads] [path_to_perl5_lib]"
+  echo "Usage: ./`basename $0` [SRA_list] [Reference] [Threads]"
   echo ""
   echo "This program will call variants using SAMtools/bcftools in given SRA NGS sequences files to obtain viral founder variants."
   echo ""
@@ -35,12 +35,11 @@ if [ "$1" == "-help" ]; then
   echo ""
   echo "[Threads]: Number of CPUs for the task (integer)"
   echo ""
-  echo "[path_to_perl5_lib]: Path to PERL5LIB, in VCFtools folder. If vcftools is installed in /home/user/, will be: /home/user/vcftools/src/perl/ "
   exit 0
 fi
 if [ "$1" == "--h" ]; then
   echo ""
-  echo "Usage: ./`basename $0` [SRA_list] [Reference] [Threads] [path_to_perl5_lib]"
+  echo "Usage: ./`basename $0` [SRA_list] [Reference] [Threads]"
   echo ""
   echo "This program will call variants using SAMtools/bcftools in given SRA NGS sequences files to obtain viral founder variants."
   echo ""
@@ -50,13 +49,12 @@ if [ "$1" == "--h" ]; then
   echo ""
   echo "[Threads]: Number of CPUs for the task (integer)"
   echo ""
-  echo "[path_to_perl5_lib]: Path to PERL5LIB, in VCFtools folder. If vcftools is installed in /home/user/, will be: /home/user/vcftools/src/perl/ "
   exit 0
 fi
 
 if [ "$1" == "--help" ]; then
   echo ""
-  echo "Usage: ./`basename $0` [SRA_list] [Reference] [Threads] [path_to_perl5_lib]"
+  echo "Usage: ./`basename $0` [SRA_list] [Reference] [Threads]"
   echo ""
   echo "This program will call variants using SAMtools/bcftools in given SRA NGS sequences files to obtain viral founder variants."
   echo ""
@@ -66,14 +64,13 @@ if [ "$1" == "--help" ]; then
   echo ""
   echo "[Threads]: Number of CPUs for the task (integer)"
   echo ""
-  echo "[path_to_perl5_lib]: Path to PERL5LIB, in VCFtools folder. If vcftools is installed in /home/user/, will be: /home/user/vcftools/src/perl/ "
   exit 0
 fi
 
-[ $# -eq 0 ] && { echo "Usage: ./`basename $0` [SRA_list] [Reference] [Threads] [path_to_perl5_lib]"; exit 1; }
+[ $# -eq 0 ] && { echo "Usage: ./`basename $0` [SRA_list] [Reference] [Threads]"; exit 1; }
 
-if [ $# -ne 4 ]; then
-  echo 1>&2 "Usage: ./`basename $0` [SRA_list] [Reference] [Threads] [path_to_perl5_lib]"
+if [ $# -ne 3 ]; then
+  echo 1>&2 "Usage: ./`basename $0` [SRA_list] [Reference] [Threads]"
   exit 3
 fi
 dir1=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
@@ -82,78 +79,137 @@ echo "Downloading SRA files from the given list of accessions"
 prefetch -O ./ --option-file ${1}
 echo "SRA files were downloaded in current directory"
 echo ""
+echo "Done"
+echo ""
 echo "Converting SRA files to fastq.gz"
 SRA= ls -1 *.sra
 for SRA in *.sra; do fastq-dump --gzip ${SRA}
 done
+
+##################################################################################
+# Trimming downloaded Illumina datasets with fastp, using 16 threads (-w option) #
+##################################################################################
+
+echo "Trimming downloaded Illumina datasets with fastp."
 echo ""
-echo "Trimming reads with fastp"
-SRA= ls -1 *.fastq.gz
-for SRA in *.fastq.gz; do fastp -w ${3} -i ${SRA} -o ${SRA}.fastp
+
+a= ls -1 *.fastq.gz
+for a in *.fastq.gz; do fastp -w ${3} -i ${a} -o ${a}.fastp
 done
-echo "Done"
+
+###########################################################################################
+# Aligning illumina datasets againts reference with minimap, using 20 threads (-t option) #
+###########################################################################################
+
+echo "Aligning illumina datasets againts reference with minimap, using n threads."
 echo ""
-echo "Mapping reads againts SARS-CoV-2 reference genome with minimap2"
-fastp= ls -1 *.fastq.gz.fastp
-for fastp in *.fastq.gz.fastp; do minimap2 -ax sr ${2} ${fastp} > ${fastp}.sam -t 20
+
+b= ls -1 *.fastq.gz.fastp
+for b in *.fastq.gz.fastp; do minimap2 -ax sr ${2} ${b} > ${b}.sam -t ${3}
 done
-echo "Done"
+
+###################################################
+# Sorting SAM files, using n threads (-@ option) #
+###################################################
+
+echo "Sorting SAM files, using n threads."
 echo ""
-echo "Sorting SAM files, using n threads"
-sam= ls -1 *.sam
-for sam in *.sam; do samtools sort ${sam} > ${sam}.sorted.bam -@ ${3}
+
+c= ls -1 *.sam
+for c in *.sam; do samtools sort ${c} > ${c}.sorted.bam -@ ${3}
 done
-echo "Done"
+
+#########################################
+# Calculating coverage of aligned reads #
+#########################################
+
+echo "Calculating coverage of aligned reads."
 echo ""
-echo "Cleaning intermediate files"
-rm *.fastp
-rm *.sam
-echo "Done"
-echo ""
+
+d= ls -1 *.sorted.bam
+for d in *.sorted.bam; do samtools depth ${d} |  awk '{sum+=$3} END { print "Average = ",sum/NR}'
+done
+
+######################
+# Renaming BAM files #
+######################
+
 echo "Renaming files in bash"
-for filename in *.bam; do mv "./$filename" "./$(echo "$filename" | sed -e 's/.fastq.gz//g')";  done
-for filename in *.bam; do mv "./$filename" "./$(echo "$filename" | sed -e 's/.fastp.sam//g')";  done
-echo "Done"
+for filename in *.bam; do mv "./$filename" "./$(echo "$filename" | sed -e 's/.fastq.gz.fastp.sam.sorted//g')";  done
+
+######################
+# Indexing BAM files #
+######################
+
+echo "Indexing BAM files."
 echo ""
-echo "Indexing bam files"
+
+f= ls -1 *.bam
+for f in *.bam; do samtools index ${f}; done
+
+###############################################################
+### Performing Germline Variant Calling with strelka v2.9.2 ###
+###############################################################
+
+echo "Performing Germnline Variant Calling with strelka v2.9.2:"
+echo ""
+echo "for documentation, please see: https://github.com/Illumina/strelka"
+echo ""
+echo "downloading strelka binary from github repository"
+wget https://github.com/Illumina/strelka/releases/download/v2.9.2/strelka-2.9.2.centos6_x86_64.tar.bz2
+tar xvjf strelka-2.9.2.centos6_x86_64.tar.bz2
+
 bam= ls -1 *.bam
-for bam in *.bam; do samtools index ${bam} -@ 20
+for bam in *.bam; do
+# configuration
+begin=`date +%s`
+./strelka-2.9.2.centos6_x86_64/bin/configureStrelkaGermlineWorkflow.py \
+    --bam SRR10971381.bam \
+    --bam ${bam} \
+    --referenceFasta ${2} \
+    --runDir ${bam}_strelka
+# execution on a single local machine with n parallel jobs
+${bam}_strelka/runWorkflow.py -m local -j ${3}
+echo "Variant Calling done"
+end=`date +%s`
+elapsed=`expr $end - $begin`
+echo "................................................................................."
+cp ./${bam}_strelka/results/variants/variants.vcf.gz ./strelka_germline_variants.vcf.gz
+bgzip -f -d strelka_germline_variants.vcf.gz
+grep "#" strelka_germline_variants.vcf > strelka_germline_variants_header.vcf
+grep "PASS" strelka_germline_variants.vcf > strelka_germline_variants_PASS.vcf
+cat strelka_germline_variants_header.vcf strelka_germline_variants_PASS.vcf > ${bam}.vcf
+rm strelka_germline_variants_header.vcf strelka_germline_variants_PASS.vcf strelka_germline_variants.vcf.gz
 done
-echo "Done"
+
+###########################
+# Cleaning Up directories #
+###########################
+
+echo "Cleaning up strelka directories and intermediate files"
+rm -r -f *_strelka strelka_germline_variants.vcf strelka_germline_variants_PASS.vcf strelka_germline_variants_header.vcf
+
+#######################################
+### Merging variants using jacquard ###
+#######################################
+echo "Merging variants using jacquard"
 echo ""
-echo "Calling and filtering variants by using bcftools"
-echo ""
-bam= ls -1 *.bam
-for bam in *.bam; do bcftools mpileup --min-ireads 3 -B -C 50 -d 250 --fasta-ref ${2} --threads ${3} -Ou ${bam}| bcftools call -mv -Ov -o ${bam}.vcf
-done
-echo ""
-bcf= ls -1 *.sorted.bam.vcf
-for bcf in *.sorted.bam.vcf; do bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1])/(DP4[2]+DP4[3]) > 0.3' ${bcf} > ${bcf}.filtered
-done
-echo "Done"
-echo ""
-echo "BGZIP and Tabix founder variants"
-founder= ls -1 *.sorted.bam.vcf.filtered
-for founder in *.sorted.bam.vcf.filtered; do bgzip ${founder}
-done
-founder= ls -1 *.sorted.bam.vcf.filtered.gz
-for founder in *.sorted.bam.vcf.filtered.gz; do tabix -p vcf ${founder}
-done
-echo "Done"
-echo ""
-echo "Merging founder variants across samples"
-export PERL5LIB=${4}
-vcf-merge --remove-duplicates --trim-ALTs $(ls -1 *.sorted.bam.vcf.filtered.gz | perl -pe 's/\n/ /g') > founder.vcf
-echo "Done"
-echo ""
-echo "Summarize genotypes in founder variants" 
-vcffixup founder.vcf > founder.fixup.vcf
-echo "Filtering variants with DP4 field (Min 8 reads as sum)"
-bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1]+DP4[2]+DP4[3]) > 8' founder.fixup.vcf > founder.fixup.vcf.filtered
-echo "Done"
-echo ""
-echo "All done."
-echo ""
+echo "for information, please see: https://jacquard.readthedocs.io/en/v0.42/overview.html#why-would-i-use-jacquard"
+mkdir to_translate
+cp *.vcf ./to_translate/
+cd to_translate
+jacquard translate --force ./ translated_vcfs
+cd ..
+cp ./to_translate/translated_vcfs/* ./
+mkdir primary_vcfs
+mv *.bam.vcf ./primary_vcfs/
+mkdir to_merge
+mv *.translatedTags.vcf ./to_merge/
+cd to_merge
+jacquard merge ./ merged.vcf
+cd ..
+cp ./to_merge/merged.vcf ./
+echo "All done. Merged vcf is called "merged.vcf and is located in current directory"
 
 ###############################################################
 #
