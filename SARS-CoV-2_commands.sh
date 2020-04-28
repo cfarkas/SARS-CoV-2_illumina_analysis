@@ -223,7 +223,7 @@ bedtools bamtobed -i CDC_primers.sorted.bam > CDC_primers.bed
 # Obtaining BED files from Hong Kong University, Pasteur Institute Primers and Korean Primers Alignments (PMC7045880) #
 #######################################################################################################################
 
-echo "Obtaining BED files from Hong Kong University, Pasteur Institute Primers and Korean Primers Alignments (PMC7045880)"
+echo "Obtaining BED files from Hong Kong University, Pasteur Institute Primers and Korean Primers Alignments"
 echo ""
 
 bowtie2 -p 20 -D 20 -R 3 -N 0 -L 20 -i S,1,0.50 -x covid19-refseq -f HK_Pasteur_Korea.fasta > HK_Pasteur_Korea.sam
@@ -261,7 +261,7 @@ bedtools intersect -a primer-blast-50-170-bp.bed -b merged.vcf > primer-blast-50
 # Alignment of Genbank Sequences, March 31, 2020 #
 ##################################################
 
-echo "Alignment of Genbank Sequences, March 31, 2020"
+echo "Alignment of Genbank Sequences, March-31-2020"
 echo ""
 
 minimap2 -ax asm5 covid19-refseq.fasta genbank_sequences_March_31_2020.fasta > genbank_sequences_alignment.sam
@@ -275,7 +275,7 @@ bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_alignment.sorted.bam
 # Alignment of Genbank Sequences, March 31, 2020: USA samples #
 ###############################################################
 
-echo "Alignment of Genbank Sequences, March 31, 2020: USA samples"
+echo "Alignment of Genbank Sequences, March-31-2020: USA samples"
 echo ""
 
 minimap2 -ax asm5 covid19-refseq.fasta genbank_sequences_USA_March_31_2020.fasta > genbank_sequences_USA_alignment.sam
@@ -288,7 +288,7 @@ bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_USA_alignment.sorted
 # Alignment of Genbank Sequences, April 22, 2020: Asia samples # 
 ################################################################
 
-echo "Alignment of Genbank Sequences, April 22, 2020: Asia samples"
+echo "Alignment of Genbank Sequences, April-22-2020: Asia samples"
 echo ""
 gunzip genbank_sequences_Asia_April_22_2020.fasta.gz
 minimap2 -ax asm5 covid19-refseq.fasta genbank_sequences_Asia_April_22_2020.fasta > genbank_sequences_Asia_22_2020_alignment.sam
@@ -301,7 +301,7 @@ bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_Asia_22_2020_alignme
 # Alignment of Genbank Sequences, April 22, 2020: North America samples # 
 #########################################################################
 
-echo "Alignment of Genbank Sequences, April 22, 2020: North America samples"
+echo "Alignment of Genbank Sequences, April-22-2020: North America samples"
 echo ""
 gunzip genbank_sequences_North_America_April_22_2020.fasta.gz
 minimap2 -ax asm5 covid19-refseq.fasta genbank_sequences_North_America_April_22_2020.fasta > genbank_sequences_North_America_22_2020_alignment.sam
@@ -314,7 +314,7 @@ bcftools query -f'[%CHROM\t%POS\t%DP4\n]' genbank_sequences_North_America_22_202
 # Alignment of Genbank Sequences, April 22, 2020: Europe samples # 
 ##################################################################
 
-echo "Alignment of Genbank Sequences, April 22, 2020: Europe samples"
+echo "Alignment of Genbank Sequences, April-22-2020: Europe samples"
 echo ""
 gunzip genbank_sequences_Europe_April_22_2020.fasta.gz
 minimap2 -ax asm5 covid19-refseq.fasta genbank_sequences_Europe_April_22_2020.fasta > genbank_sequences_Europe_22_2020_alignment.sam
