@@ -117,16 +117,12 @@ d= ls -1 *.sorted.bam
 for d in *.sorted.bam; do samtools depth ${d} |  awk '{sum+=$3} END { print "Average = ",sum/NR}'
 done
 
-########################################################
-# Removing duplicates in bam files for variant calling #
-########################################################
+######################
+# Renaming BAM files #
+######################
 
-echo "Removing duplicates in bam files for variant calling."
-echo ""
-
-e= ls -1 *.sorted.bam
-for e in *.sorted.bam; do samtools rmdup ${e} ${e}.rmdup
-done
+echo "Renaming files in bash"
+for filename in *.bam; do mv "./$filename" "./$(echo "$filename" | sed -e 's/.fastq.gz.fastp.sam.sorted//g')";  done
 
 ######################
 # Indexing BAM files #
@@ -135,87 +131,72 @@ done
 echo "Indexing BAM files."
 echo ""
 
-f= ls -1 *.sorted.bam.rmdup
-for f in *.sorted.bam.rmdup; do samtools index ${f}
-done
-
-######################################
-# Calling variants by using bcftools #
-######################################
-
-echo "Calling variants by using bcftools."
-echo ""
-g= ls -1 *.rmdup
-for g in *.rmdup; do bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou ${g}| bcftools call -mv -Ov -o ${g}.vcf
-done
-rm *.sam
-
-###############################################
-# Filtering VCFs using by QUAL and DP4 fields #
-###############################################
-
-echo "Filtering VCFs using by QUAL and DP4 fields."
-echo ""
-
-h= ls -1 *.vcf
-for h in *.vcf; do bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1])/(DP4[2]+DP4[3]) > 0.3' ${h} > ${h}.filtered
-done
-
-mkdir filtered_vcfs
-cp *.filtered ./filtered_vcfs/
+f= ls -1 *.bam
+for f in *.bam; do samtools index ${f}; done
 
 ###############################################################
-# Extracting DP4 field to obtain allele frequency of variants #
+### Performing Germline Variant Calling with strelka v2.9.2 ###
 ###############################################################
 
-echo "Extracting DP4 field to obtain allele frequency of variants."
+echo "Performing Germnline Variant Calling with strelka v2.9.2:"
 echo ""
+echo "for documentation, please see: https://github.com/Illumina/strelka"
+echo ""
+echo "downloading strelka binary from github repository"
+wget https://github.com/Illumina/strelka/releases/download/v2.9.2/strelka-2.9.2.centos6_x86_64.tar.bz2
+tar xvjf strelka-2.9.2.centos6_x86_64.tar.bz2
 
-cd filtered_vcfs
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR10903401.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR10903401.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR10903402.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR10903402.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR10971381.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR10971381.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059940.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059940.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059941.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059941.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059942.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059942.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059943.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059943.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059944.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059944.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059945.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059945.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059946.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059946.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11059947.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11059947.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11140744.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11140744.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11140746.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11140746.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11140748.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11140748.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11140750.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11140750.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11177792.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11177792.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11241254.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11241254.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11241255.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11241255.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11247075.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11247075.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11247076.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11247076.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11247077.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11247077.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11247078.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11247078.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278090.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278090.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278091.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278091.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278092.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278092.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278164.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278164.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278165.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278165.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278166.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278166.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278167.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278167.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11278168.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11278168.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11314339.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11314339.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397714.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397714.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397715.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397715.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397716.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397716.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397717.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397717.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397718.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397718.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397719.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397719.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397720.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397720.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397721.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397721.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397728.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397728.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397729.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397729.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11397730.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11397730.DP4
-bcftools query -f'[%CHROM\t%POS\t%DP4\n]' SRR11393704.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered > SRR11393704.DP4
+bam= ls -1 *.bam
+for bam in *.bam; do
+# configuration
+begin=`date +%s`
+./strelka-2.9.2.centos6_x86_64/bin/configureStrelkaGermlineWorkflow.py \
+    --bam SRR10971381.bam \
+    --bam ${bam} \
+    --referenceFasta covid19-refseq.fasta \
+    --runDir ${bam}_strelka
+# execution on a single local machine with n parallel jobs
+${bam}_strelka/runWorkflow.py -m local -j 20
+echo "Variant Calling done"
+end=`date +%s`
+elapsed=`expr $end - $begin`
+echo "................................................................................."
+cp ./${bam}_strelka/results/variants/variants.vcf.gz ./strelka_germline_variants.vcf.gz
+bgzip -f -d strelka_germline_variants.vcf.gz
+grep "#" strelka_germline_variants.vcf > strelka_germline_variants_header.vcf
+grep "PASS" strelka_germline_variants.vcf > strelka_germline_variants_PASS.vcf
+cat strelka_germline_variants_header.vcf strelka_germline_variants_PASS.vcf > ${bam}.vcf
+rm strelka_germline_variants_header.vcf strelka_germline_variants_PASS.vcf strelka_germline_variants.vcf.gz
+done
 
+###########################
+# Cleaning Up directories #
+###########################
+
+echo "Cleaning up strelka directories and intermediate files"
+rm -r -f *_strelka strelka_germline_variants.vcf strelka_germline_variants_PASS.vcf strelka_germline_variants_header.vcf
+
+#######################################
+### Merging variants using jacquard ###
+#######################################
+echo "Merging variants using jacquard"
+echo ""
+echo "for information, please see: https://jacquard.readthedocs.io/en/v0.42/overview.html#why-would-i-use-jacquard"
+mkdir to_translate
+cp *.vcf ./to_translate/
+cd to_translate
+jacquard translate --force ./ translated_vcfs
+cd ..
+cp ./to_translate/translated_vcfs/* ./
+mkdir primary_vcfs
+mv *.bam.vcf ./primary_vcfs/
+mkdir to_merge
+mv *.translatedTags.vcf ./to_merge/
+cd to_merge
+jacquard merge ./ merged.vcf
+cd ..
+cp ./to_merge/merged.vcf ./
+echo "All done. Merged vcf is called "merged.vcf and is located in current directory"
 
 ########################################################
 ########################################################
@@ -262,34 +243,11 @@ samtools view -bS primer-blast-50-170-bp.sam > primer-blast-50-170-bp.bam
 samtools sort -o primer-blast-50-170-bp.sorted.bam primer-blast-50-170-bp.bam
 bedtools bamtobed -i primer-blast-50-170-bp.sorted.bam > primer-blast-50-170-bp.bed
 
-################################################################################################
-# Merging all VCFs from illumina datasets with VCFtools and intersecting with primer BED files #
-################################################################################################
-
-echo "Merging all VCFs from illumina datasets and intersecting with primer BED files"
-echo ""
-
-a= ls -1 *.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered
-for a in *.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered; do bgzip ${a}
-done
-
-b= ls -1 *.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered.gz
-for b in *.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered.gz; do tabix -p vcf ${b}
-done
-
-vcf-merge $(ls -1 *.fastq.gz.fastp.sam.sorted.bam.rmdup.vcf.filtered.gz | perl -pe 's/\n/ /g') > merge.vcf
-
-##############################
-# Filtering merged VCF files #
-##############################
-
-bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1]+DP4[2]+DP4[3]) > 8' merge.vcf > merge.filtered.vcf
-
 ### Intersecting primers
 
-bedtools intersect -a CDC_primers.bed -b merge.filtered.vcf > CDC_primers.intersection
-bedtools intersect -a HK_Pasteur_Korea.bed -b merge.filtered.vcf > HK_Pasteur_Korea.intersection
-bedtools intersect -a primer-blast-50-170-bp.bed -b merge.filtered.vcf > primer-blast-50-170-bp.intersection
+bedtools intersect -a CDC_primers.bed -b merged.vcf > CDC_primers.intersection
+bedtools intersect -a HK_Pasteur_Korea.bed -b merged.vcf > HK_Pasteur_Korea.intersection
+bedtools intersect -a primer-blast-50-170-bp.bed -b merged.vcf > primer-blast-50-170-bp.intersection
 
 
 ##############################################################################################################
@@ -386,10 +344,8 @@ bgzip genbank_Europe_April_22_2020.vcf
 tabix -p vcf genbank_Europe_April_22_2020.vcf.gz
 bgzip genbank_North_America_April_22_2020.vcf
 tabix -p vcf genbank_North_America_April_22_2020.vcf.gz
-bgzip merge.filtered.vcf
-tabix -p vcf merge.filtered.vcf.gz
 
-vcf-merge merge.filtered.vcf.gz genbank_USA_March_25_2020.vcf.gz genbank_Asia_April_22_2020.vcf.gz genbank_Europe_April_22_2020.vcf.gz genbank_North_America_April_22_2020.vcf.gz > final_merge.vcf
+vcf-merge genbank_USA_March_25_2020.vcf.gz genbank_Asia_April_22_2020.vcf.gz genbank_Europe_April_22_2020.vcf.gz genbank_North_America_April_22_2020.vcf.gz > final_merge.vcf
 
 bedtools intersect -a CDC_primers.bed -b final_merge.vcf > CDC_primers.intersection.final
 bedtools intersect -a HK_Pasteur_Korea.bed -b final_merge.vcf > HK_Pasteur_Korea.intersection.final
