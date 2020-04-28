@@ -137,6 +137,12 @@ chmod 755 Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 ```
 
+### Installing jaqcuard
+For information, please see :https://jacquard.readthedocs.io/en/v0.42/installation.html
+```
+pip install jacquard
+```
+
 ### Installing vcfR library. For documentation: https://cran.r-project.org/web/packages/vcfR/vignettes/intro_to_vcfR.html
 
 In R, type
@@ -157,17 +163,17 @@ export PERL5LIB=/path/to/your/vcftools-directory/src/perl/
 These lines will execute all the analyses to obtain founder variants, using 20 threads. Users can modify this number in the script by using nano or another text processor. 
 The expected output from these commands is: 
 
-- Founder variants in illumina samples: merge.filtered.fixup.vcf
+- Founder variants in illumina samples: merged.vcf
 - Founder variants in North America: genbank_sequences_North_America_22_2020_alignment.sorted.bam.vcf
 - Founder variants in Europe: genbank_sequences_Europe_22_2020_alignment.sorted.bam.vcf
 - Founder variants in Asia: genbank_sequences_Asia_22_2020_alignment.sorted.bam.vcf 
 
-To inspect founder variants and plot it against SARS-CoV-2 reference genome, do the following (Using the genbank_sequences_North_America_22_2020_alignment.sorted.bam.vcf file, as example):
+To inspect founder variants and plot it against SARS-CoV-2 reference genome, do the following (Using the merged.vcf file, as example):
 
 ```
 R 
 library(vcfR)
-my_vcf <- read.vcfR("genbank_sequences_North_America_22_2020_alignment.sorted.bam.vcf", verbose = FALSE)
+my_vcf <- read.vcfR("merged.vcf", verbose = FALSE)
 chrom <- create.chromR(name="SARS-CoV-2 founder variants", vcf=my_vcf)
 chrom <- proc.chromR(chrom, verbose=TRUE)
 pdf('vcfR_plot.pdf')
