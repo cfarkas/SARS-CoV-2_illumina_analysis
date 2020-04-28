@@ -150,7 +150,7 @@ echo "Calling Founder Variants"
 bam= ls -1 *.bam
 for bam in *.bam; do 
 ./strelka-2.9.2.centos6_x86_64/bin/configureStrelkaGermlineWorkflow.py \
-    --bam SRR10971381.sorted.bam \
+    --bam SRR10971381.bam \
     --bam ${bam} \
     --referenceFasta covid19-refseq.fasta \
     --runDir ${bam}.founder
@@ -173,7 +173,7 @@ echo "Calling Somatic Variants"
 bam= ls -1 *.bam
 for bam in *.bam; do
 ./strelka-2.9.2.centos6_x86_64/bin/configureStrelkaSomaticWorkflow.py \
-    --normalBam SRR10971381.sorted.bam \
+    --normalBam SRR10971381.bam \
     --tumorBam ${bam} \
     --referenceFasta covid19-refseq.fasta \
     --runDir ${bam}.somatic
