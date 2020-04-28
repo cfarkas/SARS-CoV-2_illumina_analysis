@@ -153,7 +153,7 @@ install.packages("vcfR")
 
 # Quick Start:
 
-To reproduce all computational steps from the paper: https://www.biorxiv.org/content/10.1101/2020.04.09.034462v1 download this repository, provide path to PERL5LIB vcftools folder (located in/src/perl/ in vcftools folder) and execute the given bash script as follows:
+To reproduce all computational steps from the paper: https://www.biorxiv.org/content/10.1101/2020.04.09.034462v1 download this repository, provide path to PERL5LIB vcftools folder (located in/src/perl/ in vcftools folder) and execute the given bash script as follows (Control file SRR10971381 must be in this directory to work). 
 ```
 git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
@@ -245,6 +245,8 @@ For more information about this script, do
 ```
 ./SARS-CoV-2_get_ngs.sh -h 
 ```
+(Control file SRR10971381 must be in this directory as well).
+
 To test, we provided a file in this repository called SARS-CoV-2_curated_list_22_04_2020.tabular with updated SARS-CoV-2 next generation sequencing datasets up to April 22, 2020.
 
 Contact: cfarkas@udec.cl, carlosfarkas@gmail.com
