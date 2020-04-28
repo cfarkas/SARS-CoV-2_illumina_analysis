@@ -353,7 +353,6 @@ bedtools intersect -a primer-blast-50-170-bp.bed -b final_merge.vcf > primer-bla
 
 echo ""
 echo "All Done"
-echo ""
 
 ###############################################################
 #
