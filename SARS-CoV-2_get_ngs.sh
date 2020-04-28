@@ -209,7 +209,7 @@ cd to_merge
 jacquard merge ./ merged.vcf
 cd ..
 cp ./to_merge/merged.vcf ./
-echo "All done. Merged vcf is called "merged.vcf and is located in current directory"
+echo "All done"
 
 ###############################################################
 #
