@@ -203,7 +203,7 @@ mv strelka_somatic_indels.filtered.vcf ./${bam}.somatic.indels.vcf
 rm strelka_somatic_indels.vcf
 rm -r -f ${bam}.somatic
 done
-
+rm SRR10971381.bam.founder.vcf SRR10971381.bam.somatic.snvs.vcf SRR10971381.bam.somatic.indels.vcf
 #########################
 # Cleaning Up SAM files #
 #########################
