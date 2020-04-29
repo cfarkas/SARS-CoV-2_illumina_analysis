@@ -81,7 +81,7 @@ cp bin/* /usr/local/bin/
 ```
 
 ### Obtaining and installing up-to-date SAMtools with htslib (version >= 1.9)
-(Old samtools version can also work). Users needs to install version up to date of these three packages. Users can first install htslib v1.9 and then samtools with bcftools v1.9, respectively. For downloading these packages, see http://www.htslib.org/download/). The latter can be accomplish by downloading the three packages, decompressing it, and doing the following:
+(Old samtools version can also work). Users need to install version up to date of these three packages. Users can first install htslib v1.9 and then samtools with bcftools v1.9, respectively. For downloading these packages, see http://www.htslib.org/download/). The latter can be accomplished by downloading the three packages, decompressing it, and doing the following:
 ```
 wget https://github.com/samtools/htslib/releases/download/1.10.2/htslib-1.10.2.tar.bz2
 bzip2 -d htslib-1.10.2.tar.bz2
@@ -182,6 +182,19 @@ dev.off()                                                                       
 chromoqc(chrom, xlim=c(1, 29903))
 dev.off()
 ```
+To obtain a phylogenetic tree using variants collected in VCF file, do the following:
+```
+### vcf2phylip: Convert SNPs in VCF format to PHYLIP, NEXUS, binary NEXUS, or FASTA alignments for phylogenetic analysis
+
+git clone https://github.com/edgardomortiz/vcf2phylip
+cp ./vcf2phylip/vcf2phylip.py ./
+# MIN_SAMPLES_LOCUS=1
+python vcf2phylip.py -i merged.vcf -n -m 1
+# MIN_SAMPLES_LOCUS=4
+python vcf2phylip.py -i merged.vcf -n -m 4
+```
+For more information, please see: https://github.com/edgardomortiz/vcf2phylip
+
 To compare the obtained founder variants using bcftools, do the following for each bam file:
 ```
 # Calling and filtering variants by using bcftools"
