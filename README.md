@@ -189,9 +189,9 @@ To obtain a phylogenetic tree using variants collected in VCF file, do the follo
 git clone https://github.com/edgardomortiz/vcf2phylip
 cp ./vcf2phylip/vcf2phylip.py ./
 # MIN_SAMPLES_LOCUS=1
-python vcf2phylip.py -i merged.vcf -n -m 1
+python vcf2phylip.py -i merged.vcf -n -m 1 --fasta
 # MIN_SAMPLES_LOCUS=4
-python vcf2phylip.py -i merged.vcf -n -m 4
+python vcf2phylip.py -i merged.vcf -n -m 4 --fasta
 ```
 For more information, please see: https://github.com/edgardomortiz/vcf2phylip
 
