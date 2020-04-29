@@ -168,7 +168,7 @@ The expected output from these commands is:
 - Founder variants in Europe: genbank_sequences_Europe_22_2020_alignment.sorted.bam.vcf
 - Founder variants in Asia: genbank_sequences_Asia_22_2020_alignment.sorted.bam.vcf 
 
-To inspect variants and plot it against SARS-CoV-2 reference genome, do the following (Using the merged.vcf file, as example):
+To inspect founder variants and plot it against SARS-CoV-2 reference genome, do the following (Using the genbank_sequences_North_America_22_2020_alignment.sorted.bam.vcf file of North America as example):
 
 ```
 R 
