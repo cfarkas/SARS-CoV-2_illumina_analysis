@@ -192,7 +192,7 @@ dev.off()                                                                       
 chromoqc(chrom, xlim=c(1, 29903))
 dev.off()
 ```
-To obtain a phylogenetic tree using variants collected in VCF file, use vcf2phylip (For more information, please see: https://github.com/edgardomortiz/vcf2phylip): 
+To obtain a phylogenetic tree using variants collected in VCF file, use vcf2phylip (For more information, please see: https://github.com/edgardomortiz/vcf2phylip) and MrBayes as follows:
 ```
 ### vcf2phylip: Convert SNPs in VCF format to PHYLIP, NEXUS, binary NEXUS, or FASTA alignments for phylogenetic analysis
 
