@@ -151,6 +151,16 @@ In R, type
 install.packages("vcfR")
 ```
 
+### Installing MrBayes (Bayesian Inference of Phylogeny)
+for information, please see: https://nbisweden.github.io/MrBayes/download.html
+```
+git clone --depth=1 https://github.com/NBISweden/MrBayes.git
+cd MrBayes
+./configure
+make
+cp ./src/mb /usr/local/bin
+```
+
 # Quick Start:
 
 To reproduce all computational steps from the paper: https://www.biorxiv.org/content/10.1101/2020.04.09.034462v1 download this repository, provide path to PERL5LIB vcftools folder (located in/src/perl/ in vcftools folder) and execute the given bash script as follows (Control file SRR10971381 must be in this directory to work). 
@@ -182,7 +192,7 @@ dev.off()                                                                       
 chromoqc(chrom, xlim=c(1, 29903))
 dev.off()
 ```
-To obtain a phylogenetic tree using variants collected in VCF file, do the following:
+To obtain a phylogenetic tree using variants collected in VCF file, use vcf2phylip (For more information, please see: https://github.com/edgardomortiz/vcf2phylip): 
 ```
 ### vcf2phylip: Convert SNPs in VCF format to PHYLIP, NEXUS, binary NEXUS, or FASTA alignments for phylogenetic analysis
 
@@ -190,10 +200,24 @@ git clone https://github.com/edgardomortiz/vcf2phylip
 cp ./vcf2phylip/vcf2phylip.py ./
 # MIN_SAMPLES_LOCUS=1
 python vcf2phylip.py -i merged.vcf -n -m 1 --fasta
-# MIN_SAMPLES_LOCUS=4
-python vcf2phylip.py -i merged.vcf -n -m 4 --fasta
+
+# Editing nexus file for MrBayes
+sed 's/|SAMPLE1//g' merged.min1.nexus > merged.min1.nexus.1
+sed 's/|SAMPLE2//g' merged.min1.nexus.1 > merged.min1.nexus.2
+rm merged.min1.nexus.1
+awk '!a[$0]++' merged.min1.nexus.2 > merged.min1.unique.nexus
+rm merged.min1.nexus.2
+sed -i 's/NTAX=82/NTAX=41/g' merged.min1.unique.nexus
+sed -i 's/END;//g' merged.min1.unique.nexus
+
+# Adding mcmc parameters for MrBayes (users can change as desired)
+cat merged.min1.unique.nexus mcmc.parameters > merged.min1.unique.fixed.nexus
+rm merged.min1.unique.nexus
+
+# Run MrBayes on merged.min1.unique.fixed.nexus
+mb -i merged.min1.unique.fixed.nexus
+# check Bin1.con.tre tree file. Can be plotted using FigTree : https://github.com/rambaut/figtree/
 ```
-For more information, please see: https://github.com/edgardomortiz/vcf2phylip
 
 To compare the obtained founder variants using bcftools, do the following for each bam file:
 ```
