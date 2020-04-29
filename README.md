@@ -295,6 +295,6 @@ For more information about this script, do
 ```
 (Control file SRR10971381 must be in this directory as well).
 
-To test, we provided a file in this repository called SARS-CoV-2_curated_list_22_04_2020.tabular with updated SARS-CoV-2 next generation sequencing datasets up to April 22, 2020.
+To test, we provided a file in this repository called SARS-CoV-2_curated_list_22_04_2020.tabular with updated SARS-CoV-2 illumina next generation sequencing datasets up to April 22, 2020.
 
 Contact: cfarkas@udec.cl, carlosfarkas@gmail.com
