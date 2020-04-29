@@ -64,6 +64,17 @@ prefetch -O ./ SRR11397721
 prefetch -O ./ SRR11397728
 prefetch -O ./ SRR11397729
 prefetch -O ./ SRR11397730
+#
+prefetch -O ./ SRR11409417
+prefetch -O ./ SRR11410528
+prefetch -O ./ SRR11410529
+prefetch -O ./ SRR11410532
+prefetch -O ./ SRR11410533
+prefetch -O ./ SRR11410536
+prefetch -O ./ SRR11410538
+prefetch -O ./ SRR11410540
+prefetch -O ./ SRR11410541
+prefetch -O ./ SRR11410542
 
 echo "Done"
 echo ""
