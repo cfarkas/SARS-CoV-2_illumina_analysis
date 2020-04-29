@@ -1,0 +1,22 @@
+[ Set Markov chain Monte Carlo parameters ]
+	mcmcp
+		ngen=5000000
+		nruns=2
+		swapfreq=1
+		printfreq=10000
+		samplefreq=1000
+		nchains=2
+		savebrlens=yes
+		ordertaxa=no
+		filename=Bin1;
+
+	[ Go! ]
+	mcmc;
+
+	[ Summarise the results ]
+	sumt 
+		filename=Bin1
+		burnin=100000
+		contype=allcompat
+		showtreeprobs=no;
+end;
