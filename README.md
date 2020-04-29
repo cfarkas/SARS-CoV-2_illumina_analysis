@@ -207,7 +207,7 @@ sed 's/|SAMPLE2//g' merged.min1.nexus.1 > merged.min1.nexus.2
 rm merged.min1.nexus.1
 awk '!a[$0]++' merged.min1.nexus.2 > merged.min1.unique.nexus
 rm merged.min1.nexus.2
-sed -i 's/NTAX=82/NTAX=41/g' merged.min1.unique.nexus
+sed -i 's/NTAX=82/NTAX=41/g' merged.min1.unique.nexus  # Put half of initial NTAX number
 sed -i 's/END;//g' merged.min1.unique.nexus
 
 # Adding mcmc parameters for MrBayes (users can change as desired)
