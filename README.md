@@ -143,6 +143,14 @@ For information, please see :https://jacquard.readthedocs.io/en/v0.42/installati
 pip install jacquard
 ```
 
+### Installing BEDOPS
+```
+wget https://github.com/bedops/bedops/releases/download/v2.4.39/bedops_linux_x86_64-v2.4.39.tar.bz2
+tar jxvf bedops_linux_x86_64-v2.4.39.tar.bz2
+cp bin/* /usr/local/bin/
+```
+
+
 ### Installing vcfR library. For documentation: https://cran.r-project.org/web/packages/vcfR/vignettes/intro_to_vcfR.html
 
 In R, type
@@ -158,7 +166,7 @@ git clone --depth=1 https://github.com/NBISweden/MrBayes.git
 cd MrBayes
 ./configure
 make
-cp ./src/mb /usr/local/bin
+cp ./src/mb /usr/local/bin/
 ```
 
 # Quick Start:
