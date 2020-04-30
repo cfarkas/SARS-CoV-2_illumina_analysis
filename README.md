@@ -1,13 +1,13 @@
 # SARS-CoV-2_illumina_analysis
 Computational analysis to discover founder variants in illumina NGS data from SARS-CoV-2: 
 
-1) This commands will download illumina datasets available in SRA archive corresponding to SARS-CoV-2 untill early April 2020 (please see: https://www.ncbi.nlm.nih.gov/genbank/sars-cov-2-seqs/) and will obtain founder variants per sample by applying variant calling (by using strelka variant calling). 
+1) This commands will download illumina datasets available in SRA archive corresponding to SARS-CoV-2 untill early April 2020 (please see: https://www.ncbi.nlm.nih.gov/genbank/sars-cov-2-seqs/) and will obtain founder variants per sample by applying variant calling (by using strelka variant calling and bcftools). 
 
-2) This founder variants can be also cross-validated by using bcftools (with strict filtering) and snippy variant discovery tool (please see: https://github.com/tseemann/snippy) since the latter pipeline employ bayesian-based variant calling (please see: https://github.com/ekg/freebayes). 
+2) This founder variants can be also cross-validated by using snippy variant discovery tool (please see: https://github.com/tseemann/snippy) since the latter pipeline employ bayesian-based variant calling (please see: https://github.com/ekg/freebayes). 
 
 3) We also provide a way to evalute the performance of primer sets currently used for viral testing (see CDC_primers.fasta file) (https://www.cdc.gov/coronavirus/2019-ncov/lab/rt-pcr-panel-primer-probes.html). 
 
-4) Number of threads were setted to 20 in commands, but it can be increased/decreased. 
+4) Number of threads were setted to 20 in Quick Start commands, but it can be increased/decreased. 
 
 # Preeliminars: 
 
