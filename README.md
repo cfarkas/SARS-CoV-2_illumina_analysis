@@ -229,6 +229,7 @@ done
 # Filtering variants
 bcf= ls -1 *.sorted.bam.vcf
 for bcf in *.sorted.bam.vcf; do bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1])/(DP4[2]+DP4[3]) > 0.3' ${bcf} > ${bcf}.filtered
+done
 ```
 
 To compare the obtained founder variants using Snippy, do the following (i.e. Using 20 CPUs):
