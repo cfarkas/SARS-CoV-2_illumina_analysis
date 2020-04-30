@@ -253,10 +253,12 @@ samtools sort -o primer-blast-50-170-bp.sorted.bam primer-blast-50-170-bp.bam
 bedtools bamtobed -i primer-blast-50-170-bp.sorted.bam > primer-blast-50-170-bp.bed
 
 ### Intersecting primers
-
-bedtools intersect -a CDC_primers.bed -b merged.vcf > CDC_primers.intersection
-bedtools intersect -a HK_Pasteur_Korea.bed -b merged.vcf > HK_Pasteur_Korea.intersection
-bedtools intersect -a primer-blast-50-170-bp.bed -b merged.vcf > primer-blast-50-170-bp.intersection
+vcf2bed --deletions < merged.vcf > merged_deletions.bed
+vcf2bed --snvs < merged.vcf > merged_snvs.bed
+bedops --everything merged_{deletions,snvs}.bed > merged.bed
+bedtools intersect -a CDC_primers.bed -b merged.bed > CDC_primers.intersection
+bedtools intersect -a HK_Pasteur_Korea.bed -b merged.bed > HK_Pasteur_Korea.intersection
+bedtools intersect -a primer-blast-50-170-bp.bed -b merged.bed > primer-blast-50-170-bp.intersection
 
 
 ##############################################################################################################
@@ -356,9 +358,9 @@ tabix -p vcf genbank_North_America_April_22_2020.vcf.gz
 
 vcf-merge genbank_USA_March_25_2020.vcf.gz genbank_Asia_April_22_2020.vcf.gz genbank_Europe_April_22_2020.vcf.gz genbank_North_America_April_22_2020.vcf.gz > final_merge.vcf
 
-bedtools intersect -a CDC_primers.bed -b final_merge.vcf > CDC_primers.intersection.final
-bedtools intersect -a HK_Pasteur_Korea.bed -b final_merge.vcf > HK_Pasteur_Korea.intersection.final
-bedtools intersect -a primer-blast-50-170-bp.bed -b final_merge.vcf > primer-blast-50-170-bp.intersection.final
+bedtools intersect -a CDC_primers.bed -b final_merge.vcf > CDC_primers.intersection.genbank
+bedtools intersect -a HK_Pasteur_Korea.bed -b final_merge.vcf > HK_Pasteur_Korea.intersection.genbank
+bedtools intersect -a primer-blast-50-170-bp.bed -b final_merge.vcf > primer-blast-50-170-bp.intersection.genbank
 
 echo "All Done"
 #
