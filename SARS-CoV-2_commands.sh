@@ -25,7 +25,6 @@ prefetch -O ./ SRR10971381
 prefetch -O ./ SRR11059940
 prefetch -O ./ SRR11059941
 prefetch -O ./ SRR11059942
-prefetch -O ./ SRR11059943
 prefetch -O ./ SRR11059944
 prefetch -O ./ SRR11059945
 prefetch -O ./ SRR11059946
