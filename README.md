@@ -218,7 +218,7 @@ sed 's/|SAMPLE2//g' merged.min1.nexus.1 > merged.min1.nexus.2
 rm merged.min1.nexus.1
 awk '!a[$0]++' merged.min1.nexus.2 > merged.min1.unique.nexus
 rm merged.min1.nexus.2
-sed -i 's/NTAX=82/NTAX=41/g' merged.min1.unique.nexus  # Put half of initial NTAX number
+sed -i 's/NTAX=98/NTAX=49/g' merged.min1.unique.nexus  # Put half of initial NTAX number
 sed -i 's/END;//g' merged.min1.unique.nexus
 
 # Adding mcmc parameters for MrBayes (users can change as desired)
@@ -276,4 +276,7 @@ For more information about this script, do
 
 To test, we provided a file in this repository called SARS-CoV-2_curated_list_22_04_2020.tabular with updated SARS-CoV-2 illumina next generation sequencing datasets up to April 22, 2020.
 
+
 Contact: cfarkas@udec.cl, carlosfarkas@gmail.com
+
+Note: Chinese Sample nCoV5 (SRR11059943) largely diverges from SARS-CoV-2 genome and was excluded from our analysis, as also explained here: Shen Z et al., "Genomic diversity of SARS-CoV-2 in Coronavirus Disease 2019 patients.", Clin Infect Dis, 2020 Mar 4. 
