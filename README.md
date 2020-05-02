@@ -203,46 +203,6 @@ dev.off()                                                                       
 chromoqc(chrom, xlim=c(1, 29903))
 dev.off()
 ```
-To obtain a phylogenetic tree using variants collected in VCF file, use vcf2phylip (For more information, please see: https://github.com/edgardomortiz/vcf2phylip) and MrBayes as follows:
-```
-### vcf2phylip: Convert SNPs in VCF format to PHYLIP, NEXUS, binary NEXUS, or FASTA alignments for phylogenetic analysis
-
-git clone https://github.com/edgardomortiz/vcf2phylip
-cp ./vcf2phylip/vcf2phylip.py ./
-
-# Build nexus file with MIN_SAMPLES_LOCUS=1, and outgroup SRR11059942 (sample with highest number of variants in the group) 
-python vcf2phylip.py -i merged.vcf -n -m 1 --fasta --outgroup SRR11059942 
-
-# Editing nexus file for MrBayes
-sed 's/|SAMPLE1//g' merged.min1.nexus > merged.min1.nexus.1
-sed 's/|SAMPLE2//g' merged.min1.nexus.1 > merged.min1.nexus.2
-rm merged.min1.nexus.1
-awk '!a[$0]++' merged.min1.nexus.2 > merged.min1.unique.nexus
-rm merged.min1.nexus.2
-sed -i 's/NTAX=98/NTAX=49/g' merged.min1.unique.nexus  # Put half of initial NTAX number
-sed -i 's/END;//g' merged.min1.unique.nexus
-
-# Adding mcmc parameters for MrBayes (users can change as desired)
-cat merged.min1.unique.nexus mcmc.parameters > merged.min1.unique.fixed.nexus
-rm merged.min1.unique.nexus
-
-# Run MrBayes on merged.min1.unique.fixed.nexus
-mb -i merged.min1.unique.fixed.nexus
-# check Bin1.con.tre tree file. Can be plotted using FigTree : https://github.com/rambaut/figtree/
-```
-
-To compare the obtained founder variants using bcftools, do the following for each bam file:
-```
-# Calling and filtering variants by using bcftools"
-echo ""
-bam= ls -1 *.bam
-for bam in *.bam; do bcftools mpileup --min-ireads 3 -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 2 -Ou ${bam}| bcftools call -mv -Ov -o ${bam}.vcf
-done
-# Filtering variants
-bcf= ls -1 *.bam.vcf
-for bcf in *.bam.vcf; do bcftools filter -e'%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1])/(DP4[2]+DP4[3]) > 0.3' ${bcf} > ${bcf}.filtered
-done
-```
 
 To compare the obtained founder variants using Snippy, do the following for each trimmed read dataset(i.e. Using 20 CPUs):
 
