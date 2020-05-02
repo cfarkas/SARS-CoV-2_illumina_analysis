@@ -209,6 +209,7 @@ To obtain a phylogenetic tree using variants collected in VCF file, use vcf2phyl
 
 git clone https://github.com/edgardomortiz/vcf2phylip
 cp ./vcf2phylip/vcf2phylip.py ./
+
 # Build nexus file with MIN_SAMPLES_LOCUS=1, and outgroup SRR11059942 (sample with highest number of variants in the group) 
 python vcf2phylip.py -i merged.vcf -n -m 1 --fasta --outgroup SRR11059942 
 
