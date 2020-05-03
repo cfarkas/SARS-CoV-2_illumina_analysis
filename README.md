@@ -183,6 +183,11 @@ For more information, please see: https://github.com/fhcrc/seqmagick
 ```
 # Install via pip
 pip install seqmagick
+
+# Install from repository
+git clone https://github.com/fhcrc/seqmagick.git
+cd seqmagick/
+sudo python setup.py install    # with sudo privileges. Check other installation options in INSTALL file
 ```
 
 # Quick Start:
