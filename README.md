@@ -169,11 +169,18 @@ conda install -c bioconda mafft
 sudo apt install mafft
 ```
 
-### Installing Fastree
+### Installing Fasttree
 For information, please see: http://www.microbesonline.org/fasttree/
 ```
 # Install via conda: 
 conda install -c bioconda fasttree
+
+# Install from Repository (Parallel version)
+wget http://www.microbesonline.org/fasttree/FastTree
+wget http://www.microbesonline.org/fasttree/FastTree.c
+gcc -DOPENMP -fopenmp -O3 -finline-functions -funroll-loops -Wall -o FastTreeMP FastTree.c -lm
+chmod 755 FastTree*
+sudo cp FastTreeMP /usr/local/bin/
 ```
 
 
