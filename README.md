@@ -178,11 +178,10 @@ conda install -c bioconda mafft
 sudo apt install mafft
 ```
 
-### Installing Biopython: https://biopython.org/
+### Installing Biopython: https://biopython.org/   # Python version 3.5>= is required
 ```
 # via pip
-pip install biopython     # python v2.7
-pip3 install biopython    # python >=v3.0
+pip3 install biopython   
 ```
 
 # Quick Start:
