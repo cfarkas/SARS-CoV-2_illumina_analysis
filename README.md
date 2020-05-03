@@ -224,6 +224,16 @@ for fastp in *.fastq.gz.fastp; do snippy --cpus 20 --outdir ./${fastp}_snippy --
 done
 ```
 
+To build a Phylogenetic tree of genbank sequences from Asia, Europe and North America, do the following:
+```
+# Join all GenBank sequences
+cat genbank_sequences_Asia_April_22_2020.fasta genbank_sequences_Europe_April_22_2020.fasta genbank_sequences_North_America_April_22_2020.fasta > all.names.fasta
+
+# Upload all.fasta to online mafft server: https://mafft.cbrc.jp/alignment/server/large.html and perform alignment in default mode
+or do:
+mafft --thread 16 --reorder all.names.fasta > all.names.tree # 64 GB RAM needed, decrease number of threads to use less RAM
+```
+
 # Steps for user-provided datasets from SARS-CoV-2
 
 In order to obtain all founder mutations in user-provided SARS-CoV-2 NGS datasets, users need to execute another bash script: SARS-CoV-2_get_ngs.sh, providing: 
