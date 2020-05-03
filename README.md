@@ -175,7 +175,7 @@ For information, please see: http://www.microbesonline.org/fasttree/
 # Install via conda: 
 conda install -c bioconda fasttree
 
-# Install from Repository (Parallel version)
+# Install from Repository (Parallel version used in this repository)
 wget http://www.microbesonline.org/fasttree/FastTree
 wget http://www.microbesonline.org/fasttree/FastTree.c
 gcc -DOPENMP -fopenmp -O3 -finline-functions -funroll-loops -Wall -o FastTreeMP FastTree.c -lm
@@ -251,9 +251,11 @@ cat asia.fasta europe.fasta north_america.fasta > all.fasta
 # align all.fasta file in the online mafft server: https://mafft.cbrc.jp/alignment/server/large.html or do:
 mafft --thread 16 --reorder all.fasta > all.tree # 64 GB RAM needed, decrease number of threads to use less RAM
 
-# Building tree with all.tree output with fasttree
-
+# Building tree with all.tree output by using fasttree (parallel version)
 FastTreeMP -nt all.tree > Fasttree.tree
+
+# Building tree with all.tree output by using fasttree (non-parallel version)
+fasttree -nt all.tree > Fasttree_probe
 
 # Phylogenetic tree can be plotted by using the iTOL server: https://itol.embl.de/upload.cgi or FigTree: https://github.com/rambaut/figtree/
 ```
