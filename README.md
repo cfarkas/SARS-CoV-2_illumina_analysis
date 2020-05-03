@@ -178,12 +178,6 @@ conda install -c bioconda mafft
 sudo apt install mafft
 ```
 
-### Installing Biopython: https://biopython.org/   # Python version 3.5>= is required
-```
-# via pip
-pip3 install biopython   
-```
-
 # Quick Start:
 
 To reproduce all computational steps from the paper: https://www.biorxiv.org/content/10.1101/2020.04.09.034462v1 download this repository, provide path to PERL5LIB vcftools folder (located in/src/perl/ in vcftools folder) and execute the given bash script as follows (Control file SRR10971381 must be in this directory to work). 
@@ -240,11 +234,33 @@ done
 
 To build a Phylogenetic tree of genbank sequences from Asia, Europe and North America, do the following:
 ```
-# Join all GenBank sequences
-cat genbank_sequences_Asia_April_22_2020.fasta genbank_sequences_Europe_April_22_2020.fasta genbank_sequences_North_America_April_22_2020.fasta > all.names.fasta
+# Inside SARS-CoV-2_illumina_analysis folder:
+
+# Renaming and join all GenBank sequences
+awk '/^>/{print ">Asia_" ++i; next}{print}' < genbank_sequences_Asia_April_22_2020.fasta > asia.fasta
+awk '/^>/{print ">Europe_" ++i; next}{print}' < genbank_sequences_Europe_April_22_2020.fasta > europe.fasta
+awk '/^>/{print ">North_America_" ++i; next}{print}' < genbank_sequences_North_America_April_22_2020.fasta > north_america.fasta
+cat asia.fasta europe.fasta north_america.fasta > all.fasta
 
 # align all.fasta file in the online mafft server: https://mafft.cbrc.jp/alignment/server/large.html or do:
-mafft --thread 16 --reorder all.names.fasta > all.names.tree # 64 GB RAM needed, decrease number of threads to use less RAM
+mafft --thread 16 --reorder all.fasta > all.tree # 64 GB RAM needed, decrease number of threads to use less RAM
+
+# Covert mafft alignment (all.names.tree) to nexus: 
+git clone https://github.com/ODiogoSilva/ElConcatenero.git
+cp all.names.tree ./ElConcatenero/
+cd ElConcatenero/
+chmod 755 El*
+python3 ElConcatenero.py -c -of nexus -in all.tree
+cd ..
+cp ./ElConcatenero/all.nex ./
+
+# Edit all.nex file and add mcmc.parameters for MrBayes
+cat all.nex mcmc.parameters > all.mb
+
+# Run MrBayes
+mb -i all.mb
+
+# Phylogenetic tree can be plotted by using the iTOL server: https://itol.embl.de/upload.cgi or FigTree: https://github.com/rambaut/figtree/
 ```
 
 # Steps for user-provided datasets from SARS-CoV-2
