@@ -245,14 +245,14 @@ cat asia.fasta europe.fasta north_america.fasta > all.fasta
 # align all.fasta file in the online mafft server: https://mafft.cbrc.jp/alignment/server/large.html or do:
 mafft --thread 16 --reorder all.fasta > all.tree # 64 GB RAM needed, decrease number of threads to use less RAM
 
-# Covert mafft alignment (all.names.tree) to nexus: 
+# Covert mafft alignment (all.names.tree) to PHYLIP format: 
 git clone https://github.com/ODiogoSilva/ElConcatenero.git
 cp all.names.tree ./ElConcatenero/
 cd ElConcatenero/
 chmod 755 El*
-python3 ElConcatenero.py -c -of nexus -in all.tree
+python3 ElConcatenero.py -c -of phylip -in all.tree
 cd ..
-cp ./ElConcatenero/all.nex ./
+cp ./ElConcatenero/all.phy ./
 
 # Edit all.nex file and add mcmc.parameters for MrBayes
 cat all.nex mcmc.parameters > all.mb
