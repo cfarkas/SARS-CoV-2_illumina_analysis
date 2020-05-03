@@ -160,16 +160,6 @@ In R, type
 install.packages("vcfR")
 ```
 
-### Installing MrBayes (Bayesian Inference of Phylogeny)
-for information, please see: https://nbisweden.github.io/MrBayes/download.html
-```
-git clone --depth=1 https://github.com/NBISweden/MrBayes.git
-cd MrBayes
-./configure
-make
-cp ./src/mb /usr/local/bin/
-```
-
 ### Installing MAFFT multi sequence alignment tool
 For more information, please see: https://mafft.cbrc.jp/alignment/software/
 ```
@@ -179,19 +169,13 @@ conda install -c bioconda mafft
 sudo apt install mafft
 ```
 
-### Installing RAxML - Randomized Axelerated Maximum Likelihood: 
+### Installing Fastree
+For information, please see: http://www.microbesonline.org/fasttree/
 ```
-wget https://github.com/stamatak/standard-RAxML/archive/master.zip
-unzip master.zip
-cd standard-RAxML-master/
-make -f Makefile.gcc # basic non-parallized version
-make -f Makefile.SSE3.gcc # x86 processor optimized version
-make -f Makefile.PTHREADS.gcc # parallelized version
-make -f Makefile.SSE3.PTHREADS.gcc # parallelized and x86 processor optimized version
-ls raxmlHPC*
-# move raxml files to bin/ folder
-sudo cp raxmlHPC* /usr/local/bin/
+# Install via conda: 
+conda install -c bioconda fasttree
 ```
+
 
 # Quick Start:
 
@@ -269,12 +253,6 @@ python3 ElConcatenero.py -c -of phylip -in all.tree
 cd ..
 cp ./ElConcatenero/all.phy ./
 
-# Edit all.nex file and add mcmc.parameters for MrBayes
-cat all.nex mcmc.parameters > all.mb
-
-# Run RAxML with GTRCAT model, random number seeds of 123, automatic bootstopping criteria (autoMRE), random number seed for the parsimony inference of 678 and 20 threads as follows: 
-
-raxmlHPC-PTHREADS -s all.phy -n all.out -m GTRCAT -f a -x 345 -N autoMRE -p 678 -T 20
 
 # Phylogenetic tree can be plotted by using the iTOL server: https://itol.embl.de/upload.cgi or FigTree: https://github.com/rambaut/figtree/
 ```
