@@ -169,7 +169,7 @@ conda install -c bioconda mafft
 sudo apt install mafft
 ```
 
-### Installing Fasttree
+### Installing Fasttree: inferring approximately-maximum-likelihood phylogenetic trees
 For information, please see: http://www.microbesonline.org/fasttree/
 ```
 # Install via conda: 
