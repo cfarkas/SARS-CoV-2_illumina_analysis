@@ -272,10 +272,9 @@ cp ./ElConcatenero/all.phy ./
 # Edit all.nex file and add mcmc.parameters for MrBayes
 cat all.nex mcmc.parameters > all.mb
 
-# Run MrBayes
-mb -i all.mb
-# To speed up analysis, MrBayes can be run in parallel with mpirun as follows: (Using 30 threads, as example)
-mpirun -np 30 mb -i all.mb
+# Run RAxML with GTRCAT model, random number seeds of 123, automatic bootstopping criteria (autoMRE), random number seed for the parsimony inference of 678 and 20 threads as follows: 
+
+raxmlHPC-PTHREADS -s all.phy -n all.out -m GTRCAT -f a -x 345 -N autoMRE -p 678 -T 20
 
 # Phylogenetic tree can be plotted by using the iTOL server: https://itol.embl.de/upload.cgi or FigTree: https://github.com/rambaut/figtree/
 ```
