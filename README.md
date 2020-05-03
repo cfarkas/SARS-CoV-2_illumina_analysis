@@ -169,6 +169,13 @@ cd MrBayes
 make
 cp ./src/mb /usr/local/bin/
 ```
+### Installing MAFFT multi sequence alignment tool 
+```
+# Via conda: 
+conda install -c bioconda mafft
+# with sudo privileges 
+sudo apt install mafft
+```
 
 # Quick Start:
 
@@ -229,8 +236,7 @@ To build a Phylogenetic tree of genbank sequences from Asia, Europe and North Am
 # Join all GenBank sequences
 cat genbank_sequences_Asia_April_22_2020.fasta genbank_sequences_Europe_April_22_2020.fasta genbank_sequences_North_America_April_22_2020.fasta > all.names.fasta
 
-# Upload all.fasta to online mafft server: https://mafft.cbrc.jp/alignment/server/large.html and perform alignment in default mode
-or do:
+# align all.fasta file in the online mafft server: https://mafft.cbrc.jp/alignment/server/large.html or do:
 mafft --thread 16 --reorder all.names.fasta > all.names.tree # 64 GB RAM needed, decrease number of threads to use less RAM
 ```
 
