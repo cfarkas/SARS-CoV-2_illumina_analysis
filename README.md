@@ -259,6 +259,8 @@ cat all.nex mcmc.parameters > all.mb
 
 # Run MrBayes
 mb -i all.mb
+# To speed up analysis, MrBayes can be run in parallel with mpirun as follows: (Using 30 threads, as example)
+mpirun -np 30 mb -i all.mb
 
 # Phylogenetic tree can be plotted by using the iTOL server: https://itol.embl.de/upload.cgi or FigTree: https://github.com/rambaut/figtree/
 ```
