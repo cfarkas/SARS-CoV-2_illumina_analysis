@@ -169,12 +169,20 @@ cd MrBayes
 make
 cp ./src/mb /usr/local/bin/
 ```
-### Installing MAFFT multi sequence alignment tool 
+### Installing MAFFT multi sequence alignment tool
+For more information, please see: https://mafft.cbrc.jp/alignment/software/
 ```
-# Via conda: 
+# Install via conda: 
 conda install -c bioconda mafft
 # with sudo privileges 
 sudo apt install mafft
+```
+
+### Installing seqmagick : An imagemagick-like frontend to Biopython SeqIO
+For more information, please see: https://github.com/fhcrc/seqmagick
+```
+# Install via pip
+pip install seqmagick
 ```
 
 # Quick Start:
