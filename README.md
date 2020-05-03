@@ -251,15 +251,9 @@ cat asia.fasta europe.fasta north_america.fasta > all.fasta
 # align all.fasta file in the online mafft server: https://mafft.cbrc.jp/alignment/server/large.html or do:
 mafft --thread 16 --reorder all.fasta > all.tree # 64 GB RAM needed, decrease number of threads to use less RAM
 
-# Covert mafft alignment (all.names.tree) to PHYLIP format: 
-git clone https://github.com/ODiogoSilva/ElConcatenero.git
-cp all.names.tree ./ElConcatenero/
-cd ElConcatenero/
-chmod 755 El*
-python3 ElConcatenero.py -c -of phylip -in all.tree
-cd ..
-cp ./ElConcatenero/all.phy ./
+# Building tree with all.tree output with fasttree
 
+FastTreeMP -nt all.tree > Fasttree.tree
 
 # Phylogenetic tree can be plotted by using the iTOL server: https://itol.embl.de/upload.cgi or FigTree: https://github.com/rambaut/figtree/
 ```
