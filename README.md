@@ -178,16 +178,10 @@ conda install -c bioconda mafft
 sudo apt install mafft
 ```
 
-### Installing seqmagick : An imagemagick-like frontend to Biopython SeqIO
-For more information, please see: https://github.com/fhcrc/seqmagick
+### Installing Biopython: https://biopython.org/
 ```
-# Install via pip
-pip install seqmagick
-
-# Install from repository
-git clone https://github.com/fhcrc/seqmagick.git
-cd seqmagick/
-sudo python setup.py install    # with sudo privileges. Check other installation options in INSTALL file
+# via pip
+pip install biopython
 ```
 
 # Quick Start:
