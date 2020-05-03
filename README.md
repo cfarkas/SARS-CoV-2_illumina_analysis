@@ -169,6 +169,7 @@ cd MrBayes
 make
 cp ./src/mb /usr/local/bin/
 ```
+
 ### Installing MAFFT multi sequence alignment tool
 For more information, please see: https://mafft.cbrc.jp/alignment/software/
 ```
@@ -176,6 +177,20 @@ For more information, please see: https://mafft.cbrc.jp/alignment/software/
 conda install -c bioconda mafft
 # with sudo privileges 
 sudo apt install mafft
+```
+
+### Installing RAxML - Randomized Axelerated Maximum Likelihood: 
+```
+wget https://github.com/stamatak/standard-RAxML/archive/master.zip
+unzip master.zip
+cd standard-RAxML-master/
+make -f Makefile.gcc # basic non-parallized version
+make -f Makefile.SSE3.gcc # x86 processor optimized version
+make -f Makefile.PTHREADS.gcc # parallelized version
+make -f Makefile.SSE3.PTHREADS.gcc # parallelized and x86 processor optimized version
+ls raxmlHPC*
+# move raxml files to bin/ folder
+sudo cp raxmlHPC* /usr/local/bin/
 ```
 
 # Quick Start:
