@@ -1,0 +1,42 @@
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##bcftoolsVersion=1.9+htslib-1.9
+##bcftoolsCommand=mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 10 -Ou SRR11397728.fq.sam.sorted.bam.rmdup
+##reference=file://covid19-refseq.fasta
+##contig=<ID=NC_045512.2,length=29903>
+##ALT=<ID=*,Description="Represents allele(s) other than observed.">
+##INFO=<ID=INDEL,Number=0,Type=Flag,Description="Indicates that the variant is an INDEL.">
+##INFO=<ID=IDV,Number=1,Type=Integer,Description="Maximum number of reads supporting an indel">
+##INFO=<ID=IMF,Number=1,Type=Float,Description="Maximum fraction of reads supporting an indel">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Raw read depth">
+##INFO=<ID=VDB,Number=1,Type=Float,Description="Variant Distance Bias for filtering splice-site artefacts in RNA-seq data (bigger is better)",Version="3">
+##INFO=<ID=RPB,Number=1,Type=Float,Description="Mann-Whitney U test of Read Position Bias (bigger is better)">
+##INFO=<ID=MQB,Number=1,Type=Float,Description="Mann-Whitney U test of Mapping Quality Bias (bigger is better)">
+##INFO=<ID=BQB,Number=1,Type=Float,Description="Mann-Whitney U test of Base Quality Bias (bigger is better)">
+##INFO=<ID=MQSB,Number=1,Type=Float,Description="Mann-Whitney U test of Mapping Quality vs Strand Bias (bigger is better)">
+##INFO=<ID=SGB,Number=1,Type=Float,Description="Segregation based metric.">
+##INFO=<ID=MQ0F,Number=1,Type=Float,Description="Fraction of MQ0 reads (smaller is better)">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description="List of Phred-scaled genotype likelihoods">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##INFO=<ID=ICB,Number=1,Type=Float,Description="Inbreeding Coefficient Binomial test (bigger is better)">
+##INFO=<ID=HOB,Number=1,Type=Float,Description="Bias in the number of HOMs number (smaller is better)">
+##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes for each ALT allele, in the same order as listed">
+##INFO=<ID=AN,Number=1,Type=Integer,Description="Total number of alleles in called genotypes">
+##INFO=<ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+##INFO=<ID=MQ,Number=1,Type=Integer,Description="Average mapping quality">
+##bcftools_callVersion=1.9+htslib-1.9
+##bcftools_callCommand=call -mv -Ov -o SRR11397728.fq.sam.sorted.bam.rmdup.vcf; Date=Thu Mar 26 16:42:26 2020
+##bcftools_filterVersion=1.9+htslib-1.9
+##bcftools_filterCommand=filter '-e%QUAL<10 ||(RPB<0.1 && %QUAL<15) || (AC<2 && %QUAL<15) || (DP4[0]+DP4[1])/(DP4[2]+DP4[3]) > 0.3' SRR11397728.fq.sam.sorted.bam.rmdup.vcf; Date=Thu Mar 26 16:52:10 2020
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	SRR11397728.fq.sam.sorted.bam.rmdup
+NC_045512.2	2480	.	A	G	225	PASS	DP=96;VDB=0.070775;SGB=-0.693147;MQSB=0.497542;MQ0F=0;AC=2;AN=2;DP4=0,0,27,69;MQ=40	GT:PL	1/1:255,255,0
+NC_045512.2	2558	.	C	T	225	PASS	DP=56;VDB=1.46382e-31;SGB=-0.693147;MQSB=0.91289;MQ0F=0;AC=2;AN=2;DP4=0,0,13,43;MQ=39	GT:PL	1/1:255,169,0
+NC_045512.2	6971	.	T	C	166	PASS	DP=12;VDB=0.892694;SGB=-0.680642;MQSB=0.0591947;MQ0F=0;AC=2;AN=2;DP4=0,0,4,8;MQ=25	GT:PL	1/1:196,36,0
+NC_045512.2	6975	.	G	T	159	PASS	DP=12;VDB=0.892694;SGB=-0.680642;MQSB=0.0591947;MQ0F=0;AC=2;AN=2;DP4=0,0,4,8;MQ=25	GT:PL	1/1:189,36,0
+NC_045512.2	6977	.	G	A	170	PASS	DP=12;VDB=0.881069;SGB=-0.680642;MQSB=0.0591947;MQ0F=0;AC=2;AN=2;DP4=0,0,4,8;MQ=25	GT:PL	1/1:200,36,0
+NC_045512.2	7072	.	C	T	225	PASS	DP=25;VDB=0.534944;SGB=-0.692914;MQSB=0.0137957;MQ0F=0;AC=2;AN=2;DP4=0,0,19,6;MQ=36	GT:PL	1/1:255,75,0
+NC_045512.2	9170	.	C	T	228	PASS	DP=229;VDB=0.00124735;SGB=-0.693147;RPB=1;MQB=1;MQSB=0.901353;BQB=1;MQ0F=0;AC=2;AN=2;DP4=1,0,103,125;MQ=41	GT:PL	1/1:255,255,0
+NC_045512.2	11083	.	G	T	228	PASS	DP=261;VDB=0;SGB=-0.693147;RPB=1;MQB=1;MQSB=0.553145;BQB=1;MQ0F=0.137931;AC=2;AN=2;DP4=1,0,236,24;MQ=28	GT:PL	1/1:255,255,0
+NC_045512.2	14805	.	C	T	225	PASS	DP=233;VDB=8.64123e-16;SGB=-0.693147;MQSB=0.802682;MQ0F=0;AC=2;AN=2;DP4=0,0,71,162;MQ=41	GT:PL	1/1:255,255,0
+NC_045512.2	17339	.	C	T	228	PASS	DP=249;VDB=7.35751e-07;SGB=-0.693147;RPB=1;MQB=1;MQSB=0.957683;BQB=1;MQ0F=0.0120482;AC=2;AN=2;DP4=0,1,120,128;MQ=41	GT:PL	1/1:255,255,0
+NC_045512.2	26144	.	G	T	225	PASS	DP=256;VDB=5.45805e-19;SGB=-0.693147;MQSB=0.997992;MQ0F=0;AC=2;AN=2;DP4=0,0,121,135;MQ=41	GT:PL	1/1:255,255,0
