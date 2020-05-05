@@ -285,6 +285,10 @@ For more information about this script, do
 
 To test, we provided a file in this repository called SARS-CoV-2_curated_list_22_04_2020.tabular with updated SARS-CoV-2 illumina next generation sequencing datasets up to April 22, 2020.
 
+### VCF files:
+
+- bcftools filtered vcf files containing founder mutations are available in the folder ./bcftools_filtered_vcfs/
+- Strelka2 output vcf files including the merged vcf file (merged.vcf) are available in the folder ./Strelka2_vcfs/
 
 ### Contact
 cfarkas@udec.cl, carlosfarkas@gmail.com
