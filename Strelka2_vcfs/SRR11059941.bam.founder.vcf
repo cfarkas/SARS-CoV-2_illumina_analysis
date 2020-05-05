@@ -1,0 +1,53 @@
+##fileformat=VCFv4.1
+##fileDate=20200429
+##source=strelka
+##source_version=2.9.2
+##startTime=Wed Apr 29 21:01:54 2020
+##cmdline=./strelka-2.9.2.centos6_x86_64/bin/configureStrelkaGermlineWorkflow.py --bam SRR10971381.bam --bam SRR11059941.bam --referenceFasta covid19-refseq.fasta --runDir SRR11059941.bam.founder
+##reference=file:///home/cfarkas/PeerJ_review/March25_2020/SARS-CoV-2_illumina_analysis/covid19-refseq.fasta
+##contig=<ID=NC_045512.2,length=29903>
+##content=strelka germline small-variant calls
+##INFO=<ID=END,Number=1,Type=Integer,Description="End position of the region described in this record">
+##INFO=<ID=BLOCKAVG_min30p3a,Number=0,Type=Flag,Description="Non-variant multi-site block. Non-variant blocks are defined independently for each sample. All sites in such a block are constrained to be non-variant, have the same filter value, and have sample values {GQX,DP,DPF} in range [x,y], y <= max(x+3,(x*1.3)).">
+##INFO=<ID=SNVHPOL,Number=1,Type=Integer,Description="SNV contextual homopolymer length">
+##INFO=<ID=CIGAR,Number=A,Type=String,Description="CIGAR alignment for each alternate indel allele">
+##INFO=<ID=RU,Number=A,Type=String,Description="Smallest repeating sequence unit extended or contracted in the indel allele relative to the reference. RUs are not reported if longer than 20 bases">
+##INFO=<ID=REFREP,Number=A,Type=Integer,Description="Number of times RU is repeated in reference">
+##INFO=<ID=IDREP,Number=A,Type=Integer,Description="Number of times RU is repeated in indel allele">
+##INFO=<ID=MQ,Number=1,Type=Integer,Description="RMS of mapping quality">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##FORMAT=<ID=GQX,Number=1,Type=Integer,Description="Empirically calibrated genotype quality score for variant sites, otherwise minimum of {Genotype quality assuming variant position,Genotype quality assuming non-variant position}">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Filtered basecall depth used for site genotyping. In a non-variant multi-site block this value represents the average of all sites in the block.">
+##FORMAT=<ID=DPF,Number=1,Type=Integer,Description="Basecalls filtered from input prior to site genotyping. In a non-variant multi-site block this value represents the average of all sites in the block.">
+##FORMAT=<ID=MIN_DP,Number=1,Type=Integer,Description="Minimum filtered basecall depth used for site genotyping within a non-variant multi-site block">
+##FORMAT=<ID=AD,Number=.,Type=Integer,Description="Allelic depths for the ref and alt alleles in the order listed. For indels this value only includes reads which confidently support each allele (posterior prob 0.51 or higher that read contains indicated allele vs all other intersecting indel alleles)">
+##FORMAT=<ID=ADF,Number=.,Type=Integer,Description="Allelic depths on the forward strand">
+##FORMAT=<ID=ADR,Number=.,Type=Integer,Description="Allelic depths on the reverse strand">
+##FORMAT=<ID=FT,Number=1,Type=String,Description="Sample filter, 'PASS' indicates that all filters have passed for this sample">
+##FORMAT=<ID=DPI,Number=1,Type=Integer,Description="Read depth associated with indel, taken from the site preceding the indel">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description="Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification">
+##FORMAT=<ID=PS,Number=1,Type=Integer,Description="Phase set identifier">
+##FORMAT=<ID=SB,Number=1,Type=Float,Description="Sample site strand bias">
+##FILTER=<ID=IndelConflict,Description="Indel genotypes from two or more loci conflict in at least one sample">
+##FILTER=<ID=SiteConflict,Description="Site is filtered due to an overlapping indel call filter">
+##FILTER=<ID=LowGQX,Description="Locus GQX is below threshold or not present">
+##FILTER=<ID=HighDPFRatio,Description="The fraction of basecalls filtered out at a site is greater than 0.4">
+##FILTER=<ID=HighSNVSB,Description="Sample SNV strand bias value (SB) exceeds 10">
+##FILTER=<ID=HighDepth,Description="Locus depth is greater than 3x the mean chromosome depth">
+##Depth_NC_045512.2=442.00
+##FILTER=<ID=LowDepth,Description="Locus depth is below 3">
+##FILTER=<ID=NotGenotyped,Description="Locus contains forcedGT input alleles which could not be genotyped">
+##FILTER=<ID=PloidyConflict,Description="Genotype call from variant caller not consistent with chromosome ploidy">
+##FILTER=<ID=NoPassedVariantGTs,Description="No samples at this locus pass all sample filters and have a variant genotype">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	SAMPLE1	SAMPLE2
+##FORMAT=<ID=FT,Number=1,Type=String,Description="Sample filter, 'PASS' indicates that all filters have passed for this sample">
+NC_045512.2	51	.	T	A	10	PASS	SNVHPOL=2;MQ=60	GT:GQ:GQX:DP:DPF:AD:ADF:ADR:SB:FT:PL	0/1:42:13:8:1:6,2:5,2:1,0:0.7:PASS:44,0,117	0/0:12:12:5:0:5,0:2,0:3,0:0.0:LowGQX:0,15,165
+NC_045512.2	6152	.	T	C	1	PASS	SNVHPOL=2;MQ=60	GT:GQ:GQX:DP:DPF:AD:ADF:ADR:SB:FT:PL	0/0:307:307:103:708:103,0:56,0:47,0:0.0:HighDPFRatio:0,310,370	0/1:28:4:5:0:4,1:2,1:2,0:0.0:PASS:30,0,127
+NC_045512.2	8242	.	T	C	27	PASS	SNVHPOL=2;MQ=60	GT:GQ:GQX:DP:DPF:AD:ADF:ADR:SB:FT:PL	0/0:554:554:185:17:185,0:48,0:137,0:0.0:PASS:0,370,370	0/1:60:6:17:0:12,5:7,0:5,5:4.9:PASS:61,0,206
+NC_045512.2	11083	.	G	T	21	PASS	SNVHPOL=10;MQ=60	GT:GQ:GQX:DP:DPF:AD:ADF:ADR:SB:FT:PL	0/0:273:273:104:243:103,1:41,1:62,0:0.0:HighDPFRatio:0,271,370	0/1:39:6:3:0:1,2:0,0:1,2:0.0:PASS:56,0,36
+NC_045512.2	11590	.	A	G	4	PASS	SNVHPOL=3;MQ=60	GT:GQ:GQX:DP:DPF:AD:ADF:ADR:SB:FT:PL	0/0:184:184:62:16:62,0:44,0:18,0:0.0:PASS:0,187,370	0/1:33:7:3:0:2,1:0,1:2,0:1.4:PASS:36,0,57
+NC_045512.2	17110	.	G	T	14	PASS	SNVHPOL=5;MQ=60	GT:GQ:GQX:DP:DPF:AD:ADF:ADR:SB:FT:PL	0/0:554:554:185:13:185,0:141,0:44,0:0.0:PASS:0,370,370	0/1:47:8:23:0:20,3:10,1:10,2:-2.7:PASS:49,0,287
+NC_045512.2	20358	.	T	G	0	PASS	SNVHPOL=5;MQ=60	GT:GQ:GQX:DP:DPF:AD:ADF:ADR:SB:FT:PL	0/0:2341:2341:779:166:779,0:267,0:512,0:0.0:PASS:0,370,370	0/1:7:6:8:0:7,1:2,1:5,0:0.0:PASS:8,0,162
+NC_045512.2	22014	.	G	T	8	PASS	SNVHPOL=5;MQ=60	GT:GQ:GQX:DP:DPF:AD:ADF:ADR:SB:FT:PL	0/0:331:331:111:9:111,0:32,0:79,0:0.0:PASS:0,334,370	0/1:41:4:14:0:12,2:7,1:5,1:-3.8:PASS:42,0,216
+NC_045512.2	25136	.	A	G	3	PASS	SNVHPOL=2;MQ=60	GT:GQ:GQX:DP:DPF:AD:ADF:ADR:SB:FT:PL	0/0:379:379:127:8:127,0:40,0:87,0:0.0:PASS:0,370,370	0/1:34:5:18:0:16,2:11,1:5,1:-2.0:PASS:35,0,249
