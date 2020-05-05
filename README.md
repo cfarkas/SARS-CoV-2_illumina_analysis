@@ -222,7 +222,7 @@ To compare the obtained founder variants using bcftools, do the following for ea
 
 ```
 bam= ls -1 *.bam
-for bam in *.bam; do bcftools mpileup --min-ireads 3 -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 2 -Ou ${bam}| bcftools call -mv -Ov -o ${bam}.vcf
+for bam in *.bam; do bcftools mpileup -B -C 50 -d 250 --fasta-ref covid19-refseq.fasta --threads 2 -Ou ${bam}| bcftools call -mv -Ov -o ${bam}.vcf
 done
 ### Filtering variants
 bcf= ls -1 *.bam.vcf
