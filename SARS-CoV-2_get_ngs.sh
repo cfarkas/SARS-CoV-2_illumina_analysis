@@ -75,7 +75,7 @@ fi
 dir1=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
 
 echo "Downloading SRA files from the given list of accessions"
-prefetch -O ./ --option-file ${1}
+prefetch --max-size 500G -O ./ --option-file ${1}
 echo "SRA files were downloaded in current directory"
 echo ""
 echo "Done"
