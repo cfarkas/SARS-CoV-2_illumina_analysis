@@ -293,5 +293,6 @@ To test, we provided a file in this repository called SARS-CoV-2_curated_list_22
 ### Contact
 cfarkas@udec.cl, carlosfarkas@gmail.com
 
-### Note
-Chinese Sample nCoV5 (SRR11059943) largely diverges from SARS-CoV-2 genome and was excluded from our analysis, as also explained here: Shen Z et al., "Genomic diversity of SARS-CoV-2 in Coronavirus Disease 2019 patients.", Clin Infect Dis, 2020 Mar 4. 
+### Notes
+- Chinese Sample nCoV5 (SRR11059943) largely diverges from SARS-CoV-2 genome and was excluded from our analysis, as also explained here: Shen Z et al., "Genomic diversity of SARS-CoV-2 in Coronavirus Disease 2019 patients.", Clin Infect Dis, 2020 Mar 4. 
+- We excluded SRR11426414, SRR11426415, SRR11426416, SRR11426417, SRR11426418 and SRR11426419 (PRJNA615319) since these datasets correspond to recombinant SARS-CoV-2 sequencing instead of clinical samples. 
