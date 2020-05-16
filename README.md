@@ -190,7 +190,8 @@ To reproduce all computational steps from the paper: https://www.biorxiv.org/con
 ```
 git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
-export PERL5LIB=/path/to/your/vcftools-directory/src/perl/   
+export PERL5LIB=/path/to/your/vcftools-directory/src/perl/ 
+chmod 755 SARS-CoV-2* covid19-refseq.fasta*
 ./SARS-CoV-2_commands.sh 
 ```
 These lines will execute all the analyses to obtain founder variants, using 20 threads. Users can modify this number in the script by using nano or another text processor. 
@@ -273,6 +274,7 @@ as follows:
 git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
 samtools faidx covid19-refseq.fasta
+chmod 755 SARS-CoV-2* covid19-refseq.fasta*
 ./SARS-CoV-2_get_ngs.sh SRA_list Reference Threads
 ```
 For more information about this script, do
