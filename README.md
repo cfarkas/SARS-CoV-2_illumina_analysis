@@ -264,17 +264,16 @@ fasttree -nt all.tree > Fasttree_probe
 
 In order to obtain all founder mutations in user-provided SARS-CoV-2 NGS datasets, users need to execute another bash script: SARS-CoV-2_get_ngs.sh, providing: 
 
-- Sequence read archive accessions of each datasets (SRR prefix)
-- SARS-CoV-2 fasta reference
+- Sequence read archive accessions of each datasets (SRR prefix list, in tabular format)
+- SARS-CoV-2 reference in fasta format
 - number of threads for calculations 
-- path to PERL5LIB from vcftools 
 
 as follows: 
 ```
 git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
 samtools faidx covid19-refseq.fasta
-./SARS-CoV-2_get_ngs.sh SRA_list Reference Threads /path/to/your/vcftools-directory/src/perl/
+./SARS-CoV-2_get_ngs.sh SRA_list Reference Threads
 ```
 For more information about this script, do
 
@@ -283,7 +282,7 @@ For more information about this script, do
 ```
 (Control file SRR10971381 must be in this directory as well).
 
-To test, we provided a file in this repository called SARS-CoV-2_curated_list_22_04_2020.tabular with updated SARS-CoV-2 illumina next generation sequencing datasets up to April 22, 2020.
+To test, we provided a file in this repository called SARS-CoV-2_curated_list_22_04_2020.tabular with updated SARS-CoV-2 illumina next generation sequencing datasets up to April 22, 2020. Also, an updated list up to May 11, 2020 is available. 
 
 ### VCF files:
 
