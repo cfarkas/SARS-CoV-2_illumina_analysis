@@ -181,12 +181,47 @@ rm strelka_germline_variants.vcf
 rm -r -f ${bam}.founder
 done
 rm SRR10971381.bam.founder.vcf
-#########################
-# Cleaning Up SAM files #
-#########################
+echo "Continue with Somatic Variant Calling"
+# configuration
+bam= ls -1 *.bam
+for bam in *.bam; do 
+./strelka-2.9.2.centos6_x86_64/bin/configureStrelkaSomaticWorkflow.py \
+    --normalBam SRR10971381.bam \
+    --tumorBam ${bam} \
+    --referenceFasta ${2} \
+    --runDir ${bam}.somatic
+# execution on a single local machine with n parallel jobs
+${bam}.somatic/runWorkflow.py -m local -j ${3}
+cp ./${bam}.somatic/results/variants/somatic.snvs.vcf.gz ./strelka_somatic_variants.vcf.gz
+bgzip -d strelka_somatic_variants.vcf.gz
+grep "#" strelka_somatic_variants.vcf > strelka_somatic_variants_header.vcf
+grep "PASS" strelka_somatic_variants.vcf > strelka_somatic_variants_PASS.vcf
+cat strelka_somatic_variants_header.vcf strelka_somatic_variants_PASS.vcf > strelka_somatic_variants.filtered.vcf
+rm strelka_somatic_variants_header.vcf strelka_somatic_variants_PASS.vcf
+mv strelka_somatic_variants.filtered.vcf ./${bam}.somatic.variants.vcf
+rm strelka_somatic_variants.vcf
+echo ""
+cp ./${bam}.somatic/results/variants/somatic.indels.vcf.gz ./strelka_somatic_indels.vcf.gz
+bgzip -d strelka_somatic_indels.vcf.gz
+grep "#" strelka_somatic_indels.vcf > strelka_somatic_indels_header.vcf
+grep "PASS" strelka_somatic_indels.vcf > strelka_somatic_indels_PASS.vcf
+cat strelka_somatic_indels_header.vcf strelka_somatic_indels_PASS.vcf > strelka_somatic_indels.filtered.vcf
+rm strelka_somatic_indels_header.vcf strelka_somatic_indels_PASS.vcf
+mv strelka_somatic_indels.filtered.vcf ./${bam}.somatic.indels.vcf
+rm strelka_somatic_indels.vcf
+rm -r -f ${bam}.somatic
+done
+echo ""
+echo "Filtered Germline and Somatic variants are located in working directory"
+echo ""
 
-echo "Cleaning up strelka directories and intermediate files"
-rm *.sam
+##################################
+# Cleaning Up intermediate files #
+##################################
+
+echo "Cleaning up intermediate files"
+rm *.sam 
+gzip *.fastp
 
 ###############################################
 ### Merging founder variants using jacquard ###
