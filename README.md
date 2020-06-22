@@ -191,7 +191,8 @@ To reproduce all computational steps from the paper: https://www.biorxiv.org/con
 ```
 git clone https://github.com/cfarkas/SARS-CoV-2_illumina_analysis.git
 cd SARS-CoV-2_illumina_analysis
-export PERL5LIB=/path/to/your/vcftools-directory/src/perl/ 
+export PERL5LIB=/path/to/your/vcftools-directory/src/perl/
+samtools faidx covid19-refseq.fasta
 chmod 755 SARS-CoV-2* covid19-refseq.fasta*
 ./SARS-CoV-2_commands.sh 
 ```
