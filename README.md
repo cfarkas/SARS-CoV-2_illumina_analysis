@@ -1,7 +1,7 @@
 # SARS-CoV-2_illumina_analysis
 Computational analysis to discover founder variants in illumina NGS data from SARS-CoV-2: 
 
-1) This commands will download illumina datasets available in SRA archive corresponding to SARS-CoV-2 untill early April 2020 (please see: https://www.ncbi.nlm.nih.gov/genbank/sars-cov-2-seqs/) and will obtain founder variants per sample by applying variant calling (by using strelka variant calling and bcftools). 
+1) This commands will download up-to-date curated SARS-CoV-2 illumina datasets available in SRA archive (from early April 2020 to now, updated monthly) (please see: https://www.ncbi.nlm.nih.gov/genbank/sars-cov-2-seqs/) and will obtain founder variants per sample by applying variant calling (by using strelka variant calling and bcftools). 
 
 2) This founder variants can be also cross-validated by using snippy variant discovery tool (please see: https://github.com/tseemann/snippy) since the latter pipeline employ bayesian-based variant calling (please see: https://github.com/ekg/freebayes). 
 
