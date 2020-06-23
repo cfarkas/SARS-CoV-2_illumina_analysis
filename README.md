@@ -292,7 +292,7 @@ We provided in this repository up-to-date SRA lists containing curated SARS-CoV-
 - May 11, 2020: SARS-CoV-2_curated_list_11_05_2020.tabular
 - May 21, 2020: SARS-CoV-2_curated_list_25_05_2020.tabular
 - June 11, 2020: SARS-CoV-2_curated_list_11_06_2020.tabular
-- June 23, 2020: SARS-CoV-2_curated_list_23_05_2020.tabular
+- June 23, 2020: SARS-CoV-2_curated_list_23_06_2020.tabular
 
 ### VCF files:
 
