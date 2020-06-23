@@ -290,7 +290,7 @@ To test, we provided a file in this repository called SARS-CoV-2_curated_list_22
 
 ### VCF files:
 
-- bcftools filtered vcf files containing founder mutations are available in the folder ./bcftools_filtered_vcfs/
+- bcftools filtered vcf files containing founder variants are available in the folder ./bcftools_filtered_vcfs/
 - Strelka2 output vcf files including the merged vcf file (merged.vcf) are available in the folder ./Strelka2_vcfs/
 
 ### Contact
