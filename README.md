@@ -286,7 +286,13 @@ For more information about this script, do
 ```
 (Control file SRR10971381 must be in this directory as well).
 
-To test, we provided a file in this repository called SARS-CoV-2_curated_list_22_04_2020.tabular with updated SARS-CoV-2 illumina next generation sequencing datasets up to April 22, 2020. Also, an updated list up to May 11, 2020 is available. 
+We provided in this repository up-to-date SRA lists containing curated SARS-CoV-2 illumina datasets accessions (cumulative, by date).
+
+- April 22, 2020: SARS-CoV-2_curated_list_22_04_2020.tabular
+- May 11, 2020: SARS-CoV-2_curated_list_11_05_2020.tabular
+- May 21, 2020: SARS-CoV-2_curated_list_25_05_2020.tabular
+- June 11, 2020: SARS-CoV-2_curated_list_11_06_2020.tabular
+- June 23, 2020: SARS-CoV-2_curated_list_23_05_2020.tabular
 
 ### VCF files:
 
