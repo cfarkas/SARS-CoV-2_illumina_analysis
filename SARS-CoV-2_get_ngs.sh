@@ -104,6 +104,7 @@ echo ""
 
 b= ls -1 *.fastq.gz.fastp
 for b in *.fastq.gz.fastp; do minimap2 -ax sr ${2} ${b} > ${b}.sam -t ${3}
+rm ${2}
 done
 
 ###################################################
@@ -115,17 +116,6 @@ echo ""
 
 c= ls -1 *.sam
 for c in *.sam; do samtools sort ${c} > ${c}.sorted.bam -@ ${3}
-done
-
-#########################################
-# Calculating coverage of aligned reads #
-#########################################
-
-echo "Calculating coverage of aligned reads."
-echo ""
-
-d= ls -1 *.sorted.bam
-for d in *.sorted.bam; do samtools depth ${d} |  awk '{sum+=$3} END { print "Average = ",sum/NR}'
 done
 
 ######################
@@ -144,6 +134,13 @@ echo ""
 
 f= ls -1 *.bam
 for f in *.bam; do samtools index ${f}; done
+
+##################################
+# Cleaning Up intermediate files #
+##################################
+
+echo "Cleaning up intermediate files"
+rm *.sam 
 
 ###############################################################
 ### Performing Germline Variant Calling with strelka v2.9.2 ###
@@ -184,14 +181,6 @@ rm SRR10971381.bam.founder.vcf
 echo ""
 echo "Filtered founder variants are located in working directory"
 echo ""
-
-##################################
-# Cleaning Up intermediate files #
-##################################
-
-echo "Cleaning up intermediate files"
-rm *.sam 
-gzip *.fastp
 
 ###############################################
 ### Merging founder variants using jacquard ###
