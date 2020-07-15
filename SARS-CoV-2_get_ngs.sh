@@ -104,18 +104,9 @@ echo ""
 
 b= ls -1 *.fastq.gz.fastp
 for b in *.fastq.gz.fastp; do minimap2 -ax sr ${2} ${b} > ${b}.sam -t ${3}
+samtools sort ${b}.sam > ${b}.sam.sorted.bam -@ ${3}
+rm ${b}.sam
 rm ${b}
-done
-
-###################################################
-# Sorting SAM files, using n threads (-@ option) #
-###################################################
-
-echo "Sorting SAM files, using n threads."
-echo ""
-
-c= ls -1 *.sam
-for c in *.sam; do samtools sort ${c} > ${c}.sorted.bam -@ ${3}
 done
 
 ######################
