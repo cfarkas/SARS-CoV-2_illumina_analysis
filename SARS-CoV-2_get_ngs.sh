@@ -164,7 +164,8 @@ for bam in *.bam; do
     --bam SRR10971381.bam \
     --bam ${bam} \
     --referenceFasta ${2} \
-    --runDir ${bam}.founder
+    --runDir ${bam}.founder \
+    --exome
 # execution on a single local machine with 20 parallel jobs
 ${bam}.founder/runWorkflow.py -m local -j ${3}
 cp ./${bam}.founder/results/variants/variants.vcf.gz ./strelka_germline_variants.vcf.gz
