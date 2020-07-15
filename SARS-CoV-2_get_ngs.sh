@@ -104,7 +104,7 @@ echo ""
 
 b= ls -1 *.fastq.gz.fastp
 for b in *.fastq.gz.fastp; do minimap2 -ax sr ${2} ${b} > ${b}.sam -t ${3}
-rm ${2}
+rm ${b}
 done
 
 ###################################################
