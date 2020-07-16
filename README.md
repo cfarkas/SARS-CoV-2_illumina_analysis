@@ -9,6 +9,8 @@ Computational analysis to discover founder variants in illumina NGS data from SA
 
 4) Number of threads were setted to 20 in Quick Start commands, but it can be increased/decreased. 
 
+4) Provided sra lists can be processed in chunks of 1000 for better performance, each in a different folder. 
+
 # Preeliminars: 
 
 ### Installing bowtie2-aligner (for details, see: http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
