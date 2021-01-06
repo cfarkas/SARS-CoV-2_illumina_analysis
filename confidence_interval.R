@@ -1,4 +1,4 @@
-# Confidence Interval script for .pi.D files
+# Confidence Interval script to process nucleotide diversity and tajima's D values per bin
 packages = c("ggplot2", "ggrepel", "vcfR")
 
 ## Now load or install&load all
