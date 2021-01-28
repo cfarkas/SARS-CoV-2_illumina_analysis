@@ -1,4 +1,4 @@
-## Note: We noticed after testing more than 5000 SARS-CoV-2 illumina sequencing data, that Strelka2 has low efficiency in regions with high depth. For better performance use this instead: https://github.com/cfarkas/SARS-CoV-2-freebayes
+### Note: We noticed after testing more than 5000 SARS-CoV-2 illumina sequencing data, that Strelka2 has low efficiency in regions with high depth. For better performance use this instead: https://github.com/cfarkas/SARS-CoV-2-freebayes
 
 # SARS-CoV-2_illumina_analysis
 Computational analysis to discover founder variants in illumina NGS data from SARS-CoV-2: 
